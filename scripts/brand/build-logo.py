@@ -83,7 +83,7 @@ def wordmark(p):
 def house(p):
     blue = ('M612,386 L256,600 V630 H322 V948 H612 Z')
     orange = ('M634,386 L796,494 V458 Q796,448 806,448 H862 Q872,448 872,458 V545 '
-              'L990,624 V655 H925 V912 Q925,920 917,920 H852 V948 H634 Z')
+              'L990,624 V655 H925 V948 H634 Z')
     out = []
     out.append(f'<path d="{blue}" fill="url(#{p}hb)"/>')
     out.append(f'<path d="{orange}" fill="url(#{p}ho)"/>')
@@ -98,9 +98,12 @@ def house(p):
     # Ventana 2x2
     out.append('<g fill="#fff"><rect x="727" y="592" width="51" height="51"/><rect x="796" y="592" width="52" height="51"/>'
                '<rect x="727" y="660" width="51" height="52"/><rect x="796" y="660" width="52" height="52"/></g>')
-    # Pieza inferior tipo cerradura (contorno blanco dentro de la mitad naranja)
-    out.append('<path d="M776,952 C776,930 786,914 786,896 A46,46 0 1 1 838,896 C838,910 842,920 854,920 H860" '
-               'fill="none" stroke="#fff" stroke-width="15" stroke-linecap="butt"/>')
+    # Pestaña inferior: la misma forma y medidas del conector azul lateral, girada 90° y centrada en
+    # la mitad naranja; sube desde la base. Igual que los otros conectores: contorno blanco por fuera
+    # (13 px visibles) y relleno del mismo degradado de su mitad.
+    bottom = 'M753,948 C753,920 731,916 730,878 C729,836 754,814 780,814 C808,814 828,838 828,870 C828,908 806,914 806,948'
+    out.append(f'<path d="M753,956 V948 {bottom[9:]} V956" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="butt"/>')
+    out.append(f'<path d="{bottom} Z" fill="url(#{p}ho)"/>')
     # Herramientas en blanco (martillo y brocha) sobre la mitad azul
     hammer = ('M347,601 C372,578 412,560 452,561 C492,562 520,584 541,608 L562,630 L583,652 L543,692 L522,671 L500,650 '
               'L322,815 V752 L446,637 C452,622 450,604 436,595 C414,583 380,590 347,601 Z')

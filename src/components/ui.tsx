@@ -23,7 +23,7 @@ const buttonVariants: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white hover:bg-primary-hover",
   secondary:
     "border border-line bg-white text-ink hover:border-primary hover:text-primary",
-  accent: "bg-accent text-white hover:bg-orange-600",
+  accent: "bg-accent text-white hover:bg-accent-hover",
 };
 
 export function ButtonLink({

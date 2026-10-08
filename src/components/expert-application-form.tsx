@@ -320,7 +320,7 @@ function NextSteps() {
         <StepNumber n={3} />
         <span>
           Sube tus documentos (cédula, RUT, certificados, planilla de seguridad
-          social) en la sección <strong>“Ser experto”</strong>.
+          social) en la sección <strong>“Mi postulación”</strong>.
         </span>
       </li>
     </ol>

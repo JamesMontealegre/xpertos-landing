@@ -38,6 +38,9 @@ function sync(dir, files, stale) {
     await onCanvas(svg('xpertos-icon.svg'), { size: 180, scale: 0.78, bg: white, out: path.join(app, 'src/app/apple-icon.png') });
   }
   await onCanvas(svg('xpertos-logo.svg'), { width: 1200, height: 630, scale: 0.82, bg: white, out: path.join(L, 'src/app/opengraph-image.png') });
+  // Correos: los clientes de correo no muestran SVG; PNG a 3x del ancho con que se muestra (160 px).
+  await sharp(svg('xpertos-wordmark.svg'), { density: 600 }).resize({ width: 480 }).png({ compressionLevel: 9 })
+    .toFile(path.join(L, 'public/brand/xpertos-wordmark.png'));
 
   // App: logo completo, solo XPERTOS y X (favicon web); la casa se usa en el ícono nativo.
   sync(path.join(U, 'assets/brand'), ['xpertos-logo.svg', 'xpertos-wordmark.svg', 'xpertos-icon.svg', 'xpertos-mark.svg', 'xpertos-mark-mono.svg'],

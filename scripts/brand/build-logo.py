@@ -88,24 +88,23 @@ def house(p):
     out.append(f'<path d="{blue}" fill="url(#{p}hb)"/>')
     out.append(f'<path d="{orange}" fill="url(#{p}ho)"/>')
     # Conector superior (naranja entra en la mitad azul) con filete blanco
-    # Las tres pestañas usan la misma forma y medidas (la azul lateral como base): la superior es su
-    # reflejo hacia la izquierda y la inferior está girada 90°.
-    up = ('M634,488.5 C606,488.5 602,466.5 564,465.5 C522,464.5 500,489.5 500,515.5 '
-          'C500,543.5 524,563.5 556,563.5 C594,563.5 600,541.5 634,541.5')
+    # Las tres pestañas tienen la misma forma y medidas: las de la pestaña naranja superior
+    # (cuello de 52, cabeza de 84 de alto, 87 de largo). La azul es su reflejo y la inferior está
+    # girada 90°. Contorno blanco por fuera (13 px visibles) y relleno del degradado de su mitad.
+    up = 'M634,512 C614,512 612,498 594,497 C565,496 547,515 547,538 C547,561 565,580 594,579 C612,578 614,564 634,564'
     out.append(f'<path d="{up}" fill="none" stroke="#fff" stroke-width="26"/>')
-    out.append(f'<path d="M646,488.5 H634 {up[11:]} H646 Z" fill="url(#{p}ho)"/>')
+    out.append(f'<path d="M646,512 H634 {up[9:]} H646 Z" fill="url(#{p}ho)"/>')
     # Conector inferior (azul entra en la mitad naranja) con filete blanco
-    low = 'M612,744 C640,744 644,722 682,721 C724,720 746,745 746,771 C746,799 722,819 690,819 C652,819 646,797 612,797'
+    low = 'M612,744 C632,744 634,730 652,729 C681,728 699,747 699,770 C699,793 681,812 652,811 C634,810 632,796 612,796'
     out.append(f'<path d="{low}" fill="none" stroke="#fff" stroke-width="26"/>')
     out.append(f'<path d="M600,744 H612 {low[9:]} H600 Z" fill="url(#{p}hk)"/>')
     # Ventana 2x2
     out.append('<g fill="#fff"><rect x="727" y="592" width="51" height="51"/><rect x="796" y="592" width="52" height="51"/>'
                '<rect x="727" y="660" width="51" height="52"/><rect x="796" y="660" width="52" height="52"/></g>')
-    # Pestaña inferior: la misma forma y medidas del conector azul lateral, girada 90° y centrada en
-    # la mitad naranja; sube desde la base. Igual que los otros conectores: contorno blanco por fuera
-    # (13 px visibles) y relleno del mismo degradado de su mitad.
-    bottom = 'M753,948 C753,920 731,916 730,878 C729,836 754,814 780,814 C808,814 828,838 828,870 C828,908 806,914 806,948'
-    out.append(f'<path d="M753,956 V948 {bottom[9:]} V956" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="butt"/>')
+    # Pestaña inferior: centrada en la mitad naranja, sube desde la base.
+    bottom = ('M753.5,948 C753.5,928 739.5,926 738.5,908 C737.5,879 756.5,861 779.5,861 '
+              'C802.5,861 821.5,879 820.5,908 C819.5,926 805.5,928 805.5,948')
+    out.append(f'<path d="M753.5,956 V948 {bottom[11:]} V956" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="butt"/>')
     out.append(f'<path d="{bottom} Z" fill="url(#{p}ho)"/>')
     # Herramientas en blanco (martillo y brocha), trazadas sobre el diseño original.
     hammer = ('M345,598 '
@@ -116,10 +115,12 @@ def house(p):
               'L322,816 V756 L453,627 '                                     # mango a 45°
               'C462,615 466,600 458,591 C450,583 432,582 410,585 C392,588 374,598 360,606 Z')  # interior de la garra
     brush_block = 'M422,764 L492,698 L575,785 L506,849 Z'
-    brush_handle = ('M414,772 L500,856 Q502,861 494,860 '                       # virola
-                    'C480,852 463,846 447,849 C434,851 425,856 418,862 '        # ensanche cóncavo inferior
-                    'L318,962 L296,923 L400,822 '                               # mango a 45°
-                    'C405,816 407,810 407,800 C407,788 408,780 414,772 Z')      # ensanche cóncavo superior
+    brush_handle = ('M411,776 L416,775 L486,845 '                               # virola (borde junto a la ranura)
+                    'C491,849 495,853 496,858 C493,861 486,860 480,857 '        # gancho al final de la virola
+                    'C472,852 463,846 455,847 C448,848 440,853 433,856 '        # curva cóncava inferior
+                    'C430,858 429,860 427,862 '
+                    'L323,962 L293,923 L390,832 '                               # mango recto, ancho uniforme
+                    'C400,826 410,814 411,800 Z')                               # curva cóncava superior
     out.append(f'<g fill="#fff"><path d="{hammer}"/><path d="{brush_block}"/><path d="{brush_handle}"/></g>')
     # Grieta de las cerdas: nace en el borde superior derecho y termina en punta.
     out.append(f'<path d="M519,730 L530,741 L471,789 Z" fill="url(#{p}hb)"/>')

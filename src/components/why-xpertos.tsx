@@ -11,7 +11,7 @@ const BENEFITS = [
     icon: ShieldCheckIcon,
     title: "Expertos verificados por personas",
     description:
-      "Un operador humano revisa documentos de identidad, RUT, antecedentes y planilla de seguridad social antes de aprobar a cada experto.",
+      "Un operador humano revisa la cédula, la planilla de seguridad social y ARL, la foto y la carta de recomendación del último trabajo antes de aprobar a cada experto.",
   },
   {
     icon: LockIcon,

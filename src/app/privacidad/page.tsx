@@ -36,8 +36,9 @@ export default function PrivacyPage() {
         <li>
           <strong>Aspirantes y expertos:</strong> nombre, correo, teléfono,
           ciudad, categorías, años de experiencia, reseña profesional y
-          documentos de verificación (cédula, RUT, certificados, antecedentes y
-          planilla de seguridad social).
+          documentos de verificación (cédula, planilla de seguridad social y
+          ARL, foto, carta de recomendación y, de forma opcional, RUT,
+          antecedentes, certificados y portafolio).
         </li>
         <li>
           <strong>Datos del servicio:</strong> estados, etapas, contratos y

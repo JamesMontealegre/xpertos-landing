@@ -4,7 +4,7 @@ const FAQS = [
   {
     question: "¿Cómo se verifica a los expertos?",
     answer:
-      "Cada aspirante llena una postulación y sube su cédula, RUT, certificados y planilla de seguridad social. Un operador de Xpertos revisa los documentos y los antecedentes antes de aprobarlo. Solo los expertos aprobados reciben servicios.",
+      "Cada aspirante llena una postulación y sube su cédula por ambos lados, planilla de seguridad social y ARL, una foto 3x4 con fondo blanco y una carta de recomendación de su último trabajo. Un operador de Xpertos revisa los documentos antes de aprobarlo. Solo los expertos aprobados reciben servicios.",
   },
   {
     question: "¿Cómo pago?",

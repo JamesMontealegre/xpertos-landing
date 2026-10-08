@@ -319,8 +319,9 @@ function NextSteps() {
       <li className="flex gap-3">
         <StepNumber n={3} />
         <span>
-          Sube tus documentos (cédula, RUT, certificados, planilla de seguridad
-          social) en la sección <strong>“Mi postulación”</strong>.
+          Sube tus documentos (cédula por ambos lados, planilla de seguridad
+          social y ARL, foto 3x4 con fondo blanco y carta de recomendación de tu
+          último trabajo) en la sección <strong>“Mi postulación”</strong>.
         </span>
       </li>
     </ol>

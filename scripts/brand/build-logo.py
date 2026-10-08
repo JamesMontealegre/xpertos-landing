@@ -173,20 +173,15 @@ TAG = 'servicios a tu medida'
 
 full = svg('20 140 1214 930', defs('a') + x_mark('a') + wordmark('a') + house('a') + tagline(TAG, 172, 1046, 910) + dashes(),
            'Xpertos — servicios a tu medida')
-mark = svg('243 285 760 760', defs('b') + house('b'), 'Xpertos')
-wordmark_only = svg('30 150 1190 262', defs('c') + x_mark('c') + wordmark('c'), 'Xpertos')
+mark = svg('243 285 760 760', defs('b') + house('b'), 'Xpertos')  # casa sola: ícono de la app nativa
 
-# Horizontal: casa a la izquierda + XPERTOS a la derecha (sin lema)
-hs = 0.40   # escala de la casa
-ws = 0.62   # escala del wordmark
-house_g = f'<g transform="translate({-256*hs:.1f} {-383*hs:.1f}) scale({hs})">{house("d")}</g>'
-house_w, house_h = 734 * hs, 565 * hs
-word_h = 237 * ws
-word_y = (house_h - word_h) / 2 + 6
-word_x = house_w + 28
-word_g = f'<g transform="translate({word_x - 40*ws:.1f} {word_y - 163*ws:.1f}) scale({ws})">{x_mark("d")}{wordmark("d")}</g>'
-total_w = word_x + 1165 * ws
-horizontal = svg(f'0 0 {total_w:.0f} {house_h:.0f}', defs('d') + house_g + word_g, 'Xpertos')
+# Dos versiones del logo: completo (casa + XPERTOS + lema) y solo XPERTOS.
+# Caja del wordmark: X de x=37 a 365, letras hasta x=1202; alto de y=161 a 404 (6 px de margen).
+WORDMARK_BOX = (31, 155, 1177, 255)
+wordmark_only = svg(' '.join(map(str, WORDMARK_BOX)), defs('c') + x_mark('c') + wordmark('c'), 'Xpertos')
+
+# Ícono (favicon): solo la X, centrada en un cuadrado.
+icon = svg('27 108.5 348 348', defs('d') + x_mark('d'), 'Xpertos')
 
 def mono_mark(color='#FFFFFF'):
     body = house('e').replace('#fff', '#000')
@@ -207,16 +202,17 @@ def strip(x):
     return x.replace('`', '')
 ts = ('// Generado por xpertos-landing/scripts/brand/build-logo.py. No editar a mano.\n'
       '// SVG del logo de Xpertos para react-native-svg (SvgXml).\n\n'
+      '/** Logo completo: casa, XPERTOS y el lema «servicios a tu medida». */\n'
       f'export const LOGO_XML = `{strip(full)}`;\n\n'
-      f'export const LOGO_HORIZONTAL_XML = `{strip(horizontal)}`;\n\n'
-      f'export const LOGO_MARK_XML = `{strip(mark)}`;\n\n'
-      '/** Proporciones (ancho / alto) según el viewBox de cada variante. */\n'
+      '/** Solo XPERTOS (sin la casa), para encabezados. */\n'
+      f'export const LOGO_WORDMARK_XML = `{strip(wordmark_only)}`;\n\n'
+      '/** Proporciones (ancho / alto) según el viewBox de cada versión. */\n'
       f'export const LOGO_RATIO = {1214/930:.4f};\n'
-      f'export const LOGO_HORIZONTAL_RATIO = {total_w/house_h:.4f};\n')
+      f'export const LOGO_WORDMARK_RATIO = {WORDMARK_BOX[2]/WORDMARK_BOX[3]:.4f};\n')
 with open(os.path.join(OUT, 'brand-logo.ts'), 'w') as f:
     f.write(ts)
 
-for name, content in [('xpertos-logo.svg', full), ('xpertos-mark.svg', mark), ('xpertos-wordmark.svg', wordmark_only), ('xpertos-horizontal.svg', horizontal)]:
+for name, content in [('xpertos-logo.svg', full), ('xpertos-wordmark.svg', wordmark_only), ('xpertos-icon.svg', icon), ('xpertos-mark.svg', mark)]:
     with open(os.path.join(OUT, name), 'w') as f:
         f.write(content)
     print(name, len(content))

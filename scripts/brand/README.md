@@ -2,8 +2,11 @@
 
 Fuente de verdad del logo en SVG, recreado a partir del diseño original.
 
+El logo tiene **dos versiones**: el completo (casa + XPERTOS + lema), para pies de página e inicios
+de sesión, y solo XPERTOS, para encabezados y barras. El favicon es solo la X.
+
 - `build-logo.py` genera los SVG: `xpertos-logo.svg` (completo, con el lema "servicios a tu medida"),
-  `xpertos-horizontal.svg` (casa + XPERTOS), `xpertos-wordmark.svg`, `xpertos-mark.svg` (casa) y
+  `xpertos-wordmark.svg` (solo XPERTOS), `xpertos-icon.svg` (la X, para el favicon), `xpertos-mark.svg` (casa, ícono de la app nativa) y
   `xpertos-mark-mono.svg` (casa de un color), además de `brand-logo.ts` para la app móvil.
   El texto está trazado como formas, así que no depende de fuentes instaladas.
 - `make-assets.cjs` copia los SVG a las tres apps y genera los PNG (favicons, ícono de iOS,

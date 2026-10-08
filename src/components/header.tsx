@@ -13,7 +13,7 @@ export function Header() {
           className="shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           aria-label={`${SITE_NAME}, inicio`}
         >
-          <Logo variant="horizontal" height={44} priority className="h-10 w-auto sm:h-11" />
+          <Logo variant="wordmark" height={36} priority className="h-8 w-auto sm:h-9" />
         </Link>
 
         <nav aria-label="Principal" className="hidden md:block">

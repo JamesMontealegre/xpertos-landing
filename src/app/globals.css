@@ -1,16 +1,28 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Colores del logo: azul (principal) y naranja (acento). */
-  --color-primary: #0a4baf;
-  --color-primary-hover: #083a8c;
-  --color-primary-soft: #e7effc;
+  /* Tema Xpertos: rampa "brand" alrededor del azul del logo (#0a4baf = brand-600),
+     "accent" = naranja del logo y "surface" = fondo general de la app. */
+  --color-brand-50: #eef4fd;
+  --color-brand-100: #d9e6fb;
+  --color-brand-200: #b6cff7;
+  --color-brand-300: #86aff0;
+  --color-brand-400: #4f87e6;
+  --color-brand-500: #2766d6;
+  --color-brand-600: #0a4baf;
+  --color-brand-700: #083c8f;
+  --color-brand-800: #0a3474;
+  --color-brand-900: #0c2d60;
+  --color-brand-950: #081c3d;
+  --color-primary: var(--color-brand-600);
+  --color-primary-hover: var(--color-brand-700);
+  --color-primary-soft: var(--color-brand-50);
   --color-accent: #f26a00;
   --color-accent-hover: #d45a00;
-  --color-surface: #f8fafc;
+  --color-surface: #ebeff2;
   --color-ink: #0f172a;
-  --color-line: #e2e8f0;
-  --font-sans: var(--font-geist-sans);
+  --color-line: #dbe1e7;
+  --font-sans: var(--font-mulish);
   --font-mono: var(--font-geist-mono);
 }
 

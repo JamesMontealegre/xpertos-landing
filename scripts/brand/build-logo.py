@@ -14,7 +14,8 @@ def defs(prefix):
     p = prefix
     return f'''<defs>
   <linearGradient id="{p}xo" x1="0" y1="198" x2="0" y2="393" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FD9A00"/><stop offset="1" stop-color="#FB4A03"/></linearGradient>
-  <linearGradient id="{p}xb" x1="0" y1="164" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1678D6"/><stop offset=".5" stop-color="#04286F"/><stop offset="1" stop-color="#0A62C6"/></linearGradient>
+  <linearGradient id="{p}xb1" x1="362" y1="164" x2="215" y2="262" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1A7AD8"/><stop offset="1" stop-color="#062E78"/></linearGradient>
+  <linearGradient id="{p}xb2" x1="210" y1="318" x2="356" y2="401" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#062E78"/><stop offset="1" stop-color="#1468D2"/></linearGradient>
   <linearGradient id="{p}wm" x1="0" y1="218" x2="0" y2="345" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{NAVY_TOP}"/><stop offset="1" stop-color="{NAVY_BOTTOM}"/></linearGradient>
   <linearGradient id="{p}hb" x1="612" y1="420" x2="300" y2="640" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A7FE6"/><stop offset=".5" stop-color="#0451B0"/><stop offset="1" stop-color="#01236A"/></linearGradient>
   <linearGradient id="{p}hk" x1="612" y1="0" x2="745" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#044CA9"/><stop offset="1" stop-color="#1478D6"/></linearGradient>
@@ -23,14 +24,15 @@ def defs(prefix):
 
 # ---------- X ----------
 def x_mark(p):
-    orange = 'M84,198 L172,198 L240,282 L124,393 L40,393 L154,282 Z'
-    blue_top = 'M270,164 L360,164 L233,274 L194,229 Z'
-    blue_bot = 'M270,400 L360,400 L233,290 L194,335 Z'
-    return (f'<path d="{orange}" fill="url(#{p}xo)" stroke="url(#{p}xo)" stroke-width="6" stroke-linejoin="round"/>'
-            # filete blanco que separa los trazos azules del naranja
-            f'<g fill="#fff" stroke="#fff" stroke-width="16" stroke-linejoin="round"><path d="{blue_top}"/><path d="{blue_bot}"/></g>'
-            # trazos azules con esquinas suavizadas
-            f'<g fill="url(#{p}xb)" stroke="url(#{p}xb)" stroke-width="5" stroke-linejoin="round"><path d="{blue_top}"/><path d="{blue_bot}"/></g>')
+    """X de dos colores: chevrón naranja y dos trazos azules del mismo grosor. Los extremos internos
+    de los trazos azules son paralelos a los bordes del naranja, separados por una ranura delgada."""
+    orange = 'M82,198 L172,198 L240,278 L122,393 L40,393 L152,278 Z'
+    blue_top = 'M277,164 L362,164 L249,269 L212,230 Z'
+    blue_bot = 'M245,292 L356,401 L257,401 L201,331 Z'
+    soft = 'stroke-width="6" stroke-linejoin="round"'  # esquinas levemente redondeadas
+    return (f'<path d="{orange}" fill="url(#{p}xo)" stroke="url(#{p}xo)" {soft}/>'
+            f'<path d="{blue_top}" fill="url(#{p}xb1)" stroke="url(#{p}xb1)" {soft}/>'
+            f'<path d="{blue_bot}" fill="url(#{p}xb2)" stroke="url(#{p}xb2)" {soft}/>')
 
 # ---------- PERTOS (letras en caja vertical, luego itálica) ----------
 H, W, G = 127, 130, 15.6

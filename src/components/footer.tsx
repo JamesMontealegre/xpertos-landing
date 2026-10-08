@@ -2,6 +2,7 @@ import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { CONTACT_EMAIL, SITE_NAME } from "@/lib/site";
 import { Container } from "@/components/ui";
+import { Logo } from "@/components/logo";
 
 /** El año se cachea por días para que el footer forme parte del shell estático. */
 async function CopyrightYear() {
@@ -14,9 +15,9 @@ export function Footer() {
   return (
     <footer className="border-t border-line bg-white py-10">
       <Container className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-lg font-bold text-primary">{SITE_NAME}</p>
-          <p className="mt-1 text-sm text-slate-600">
+        <div className="flex items-center gap-5">
+          <Logo variant="full" height={112} className="h-24 w-auto sm:h-28" />
+          <p className="max-w-[14rem] text-sm text-slate-600">
             Expertos verificados para tu hogar y tu obra.
           </p>
         </div>

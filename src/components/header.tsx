@@ -2,6 +2,7 @@ import Link from "next/link";
 import { NAV_LINKS, SITE_NAME, USERS_APP_URL } from "@/lib/site";
 import { ButtonLink, Container } from "@/components/ui";
 import { MobileNav } from "@/components/mobile-nav";
+import { Logo } from "@/components/logo";
 
 export function Header() {
   return (
@@ -9,10 +10,10 @@ export function Header() {
       <Container className="flex h-16 items-center justify-between gap-4">
         <Link
           href="/"
-          className="text-xl font-bold tracking-tight text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md"
+          className="shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           aria-label={`${SITE_NAME}, inicio`}
         >
-          {SITE_NAME}
+          <Logo variant="horizontal" height={44} priority className="h-10 w-auto sm:h-11" />
         </Link>
 
         <nav aria-label="Principal" className="hidden md:block">

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Herramientas locales (generación del logo), no forman parte de la app.
+    "scripts/**",
   ]),
 ]);
 

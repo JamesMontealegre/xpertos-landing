@@ -77,7 +77,7 @@ const schema = z.object({
 });
 
 const GENERIC_ERROR =
-  "No pudimos guardar tu postulación. Inténtalo de nuevo en unos minutos o escríbenos a hola@xpertos.co.";
+  "No pudimos guardar tu postulación. Inténtalo de nuevo en unos minutos o escríbenos a hola@xpertos.com.co.";
 
 function readValues(formData: FormData): ApplyFormValues {
   const str = (key: string) => {

@@ -206,6 +206,8 @@ ts = ('// Generado por xpertos-landing/scripts/brand/build-logo.py. No editar a 
       f'export const LOGO_XML = `{strip(full)}`;\n\n'
       '/** Solo XPERTOS (sin la casa), para encabezados. */\n'
       f'export const LOGO_WORDMARK_XML = `{strip(wordmark_only)}`;\n\n'
+      '/** Solo la X (ícono), para el loader de la app. */\n'
+      f'export const LOGO_ICON_XML = `{strip(icon)}`;\n\n'
       '/** Proporciones (ancho / alto) según el viewBox de cada versión. */\n'
       f'export const LOGO_RATIO = {1214/930:.4f};\n'
       f'export const LOGO_WORDMARK_RATIO = {WORDMARK_BOX[2]/WORDMARK_BOX[3]:.4f};\n')

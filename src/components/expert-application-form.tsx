@@ -374,6 +374,10 @@ function SuccessMessage({ email, fullName, accountCreated }: { email: string; fu
         )}
       </p>
       <NextSteps accountCreated={accountCreated} />
+      <p className="mt-5 rounded-lg border border-accent/40 bg-accent/10 p-3 text-left text-sm text-slate-800">
+        <strong>Tienes 15 días calendario</strong> para completar tu postulación y subir todos los documentos. Si no la
+        completas en ese plazo, se revocará automáticamente.
+      </p>
       <ButtonLink href={USERS_APP_URL} className="mt-6 w-full sm:w-auto">
         Abrir la app Xpertos
       </ButtonLink>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useId } from "react";
+import { useActionState, useId, useState, type FormEvent } from "react";
 import type { Category } from "@/lib/categories";
 import { USERS_APP_URL } from "@/lib/site";
 import {
@@ -10,6 +10,7 @@ import {
 } from "@/app/actions/apply";
 import { Button, ButtonLink } from "@/components/ui";
 import { CheckIcon } from "@/components/icons";
+import { APPLY_FIELDS, applyFieldError, cleanPhoneInput, type ApplyField } from "@/lib/validation";
 
 const EMPTY_VALUES: ApplyFormValues = {
   fullName: "",
@@ -24,6 +25,26 @@ const EMPTY_VALUES: ApplyFormValues = {
 
 const INITIAL_STATE: ApplyState = { status: "idle" };
 
+function readForm(form: HTMLFormElement): ApplyFormValues {
+  const data = new FormData(form);
+  const str = (key: string) => {
+    const v = data.get(key);
+    return typeof v === "string" ? v : "";
+  };
+  return {
+    fullName: str("fullName"),
+    email: str("email"),
+    phone: str("phone"),
+    city: str("city"),
+    categories: data.getAll("categories").filter((v): v is string => typeof v === "string"),
+    experienceYears: str("experienceYears"),
+    bio: str("bio"),
+    acceptTerms: data.get("acceptTerms") === "on",
+  };
+}
+
+const isApplyField = (name: string): name is ApplyField => (APPLY_FIELDS as string[]).includes(name);
+
 const inputClass =
   "mt-1.5 block w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-ink placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 aria-[invalid=true]:border-red-500";
 
@@ -33,6 +54,9 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
     INITIAL_STATE,
   );
   const formId = useId();
+  // Validación en el navegador (mismas reglas que el servidor): cada campo se revisa al salir de él,
+  // se vuelve a revisar mientras se corrige y todo se revisa al enviar. null = el campo está bien.
+  const [clientErrors, setClientErrors] = useState<Partial<Record<ApplyField, string | null>>>({});
 
   if (state.status === "success") {
     return <SuccessMessage email={state.email} fullName={state.fullName} accountCreated={state.accountCreated} />;
@@ -45,15 +69,59 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
   const values = state.status === "error" ? state.values : EMPTY_VALUES;
   const errors = state.status === "error" ? (state.fieldErrors ?? {}) : {};
   const errorId = (field: keyof ApplyFormValues) => `${formId}-${field}-error`;
+  const errorFor = (field: ApplyField): string | undefined =>
+    field in clientErrors ? (clientErrors[field] ?? undefined) : errors[field]?.[0];
+
+  const validateField = (form: HTMLFormElement, field: ApplyField) =>
+    setClientErrors((current) => ({ ...current, [field]: applyFieldError(field, readForm(form)) }));
+
+  const onBlur = (event: FormEvent<HTMLFormElement>) => {
+    const target = event.target as HTMLInputElement;
+    // Las casillas se revisan al marcarlas (onChange); los campos de texto al salir.
+    if (target.type !== "checkbox" && isApplyField(target.name)) validateField(event.currentTarget, target.name);
+  };
+
+  const onChange = (event: FormEvent<HTMLFormElement>) => {
+    const target = event.target as HTMLInputElement;
+    if (!isApplyField(target.name)) return;
+    if (target.name === "phone") {
+      const clean = cleanPhoneInput(target.value);
+      if (clean !== target.value) target.value = clean;
+    }
+    if (target.type === "checkbox" || clientErrors[target.name]) validateField(event.currentTarget, target.name);
+  };
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const values = readForm(event.currentTarget);
+    const found = Object.fromEntries(APPLY_FIELDS.map((f) => [f, applyFieldError(f, values)])) as Record<ApplyField, string | null>;
+    const firstInvalid = APPLY_FIELDS.find((f) => found[f]);
+    if (firstInvalid) {
+      event.preventDefault();
+      setClientErrors(found);
+      event.currentTarget.querySelector<HTMLElement>(`[name="${firstInvalid}"]`)?.focus();
+      return;
+    }
+    // Todo bien: se limpian para que se vean los errores que pueda devolver el servidor.
+    setClientErrors({});
+  };
+  const hasClientErrors = Object.values(clientErrors).some(Boolean);
 
   return (
-    <form action={formAction} noValidate className="space-y-5" aria-busy={pending}>
-      {state.status === "error" ? (
+    <form
+      action={formAction}
+      noValidate
+      onSubmit={onSubmit}
+      onBlur={onBlur}
+      onChange={onChange}
+      className="space-y-5"
+      aria-busy={pending}
+    >
+      {hasClientErrors || state.status === "error" ? (
         <p
           role="alert"
           className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
         >
-          {state.message}
+          {hasClientErrors ? "Revisa los campos marcados en rojo." : state.status === "error" ? state.message : null}
         </p>
       ) : null}
 
@@ -61,7 +129,7 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
         <Field
           id={`${formId}-fullName`}
           label="Nombre completo"
-          error={errors.fullName?.[0]}
+          error={errorFor("fullName")}
           errorId={errorId("fullName")}
         >
           <input
@@ -70,16 +138,17 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
             type="text"
             autoComplete="name"
             required
+            placeholder="Nombre y apellido"
             defaultValue={values.fullName}
-            aria-invalid={Boolean(errors.fullName)}
-            aria-describedby={errors.fullName ? errorId("fullName") : undefined}
+            aria-invalid={Boolean(errorFor("fullName"))}
+            aria-describedby={errorFor("fullName") ? errorId("fullName") : undefined}
             className={inputClass}
           />
         </Field>
         <Field
           id={`${formId}-email`}
           label="Correo electrónico"
-          error={errors.email?.[0]}
+          error={errorFor("email")}
           errorId={errorId("email")}
         >
           <input
@@ -89,16 +158,17 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
             autoComplete="email"
             inputMode="email"
             required
+            placeholder="nombre@correo.com"
             defaultValue={values.email}
-            aria-invalid={Boolean(errors.email)}
-            aria-describedby={errors.email ? errorId("email") : undefined}
+            aria-invalid={Boolean(errorFor("email"))}
+            aria-describedby={errorFor("email") ? errorId("email") : undefined}
             className={inputClass}
           />
         </Field>
         <Field
           id={`${formId}-phone`}
-          label="Teléfono / WhatsApp"
-          error={errors.phone?.[0]}
+          label="Celular / WhatsApp"
+          error={errorFor("phone")}
           errorId={errorId("phone")}
         >
           <input
@@ -108,17 +178,18 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
             autoComplete="tel"
             inputMode="tel"
             required
+            maxLength={16}
             placeholder="300 123 4567"
             defaultValue={values.phone}
-            aria-invalid={Boolean(errors.phone)}
-            aria-describedby={errors.phone ? errorId("phone") : undefined}
+            aria-invalid={Boolean(errorFor("phone"))}
+            aria-describedby={errorFor("phone") ? errorId("phone") : undefined}
             className={inputClass}
           />
         </Field>
         <Field
           id={`${formId}-city`}
           label="Ciudad"
-          error={errors.city?.[0]}
+          error={errorFor("city")}
           errorId={errorId("city")}
         >
           <input
@@ -129,16 +200,16 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
             required
             placeholder="Bogotá, Medellín…"
             defaultValue={values.city}
-            aria-invalid={Boolean(errors.city)}
-            aria-describedby={errors.city ? errorId("city") : undefined}
+            aria-invalid={Boolean(errorFor("city"))}
+            aria-describedby={errorFor("city") ? errorId("city") : undefined}
             className={inputClass}
           />
         </Field>
       </div>
 
       <fieldset
-        aria-describedby={errors.categories ? errorId("categories") : undefined}
-        aria-invalid={Boolean(errors.categories)}
+        aria-describedby={errorFor("categories") ? errorId("categories") : undefined}
+        aria-invalid={Boolean(errorFor("categories"))}
       >
         <legend className="text-sm font-medium text-ink">
           ¿En qué categorías trabajas?
@@ -165,13 +236,13 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
             );
           })}
         </div>
-        <FieldError id={errorId("categories")} message={errors.categories?.[0]} />
+        <FieldError id={errorId("categories")} message={errorFor("categories")} />
       </fieldset>
 
       <Field
         id={`${formId}-experienceYears`}
         label="Años de experiencia"
-        error={errors.experienceYears?.[0]}
+        error={errorFor("experienceYears")}
         errorId={errorId("experienceYears")}
       >
         <input
@@ -184,9 +255,9 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
           step={1}
           required
           defaultValue={values.experienceYears}
-          aria-invalid={Boolean(errors.experienceYears)}
+          aria-invalid={Boolean(errorFor("experienceYears"))}
           aria-describedby={
-            errors.experienceYears ? errorId("experienceYears") : undefined
+            errorFor("experienceYears") ? errorId("experienceYears") : undefined
           }
           className={`${inputClass} sm:max-w-xs`}
         />
@@ -196,7 +267,7 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
         id={`${formId}-bio`}
         label="Reseña corta de tu experiencia"
         hint="Qué tipo de trabajos haces, dónde has trabajado y qué te diferencia."
-        error={errors.bio?.[0]}
+        error={errorFor("bio")}
         errorId={errorId("bio")}
       >
         <textarea
@@ -207,8 +278,8 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
           minLength={20}
           maxLength={1000}
           defaultValue={values.bio}
-          aria-invalid={Boolean(errors.bio)}
-          aria-describedby={errors.bio ? errorId("bio") : undefined}
+          aria-invalid={Boolean(errorFor("bio"))}
+          aria-describedby={errorFor("bio") ? errorId("bio") : undefined}
           className={inputClass}
         />
       </Field>
@@ -224,8 +295,8 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
             type="checkbox"
             required
             defaultChecked={values.acceptTerms}
-            aria-invalid={Boolean(errors.acceptTerms)}
-            aria-describedby={errors.acceptTerms ? errorId("acceptTerms") : undefined}
+            aria-invalid={Boolean(errorFor("acceptTerms"))}
+            aria-describedby={errorFor("acceptTerms") ? errorId("acceptTerms") : undefined}
             className="mt-0.5 h-4 w-4 shrink-0 rounded border-line accent-primary focus:ring-primary"
           />
           <span>
@@ -240,7 +311,7 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
             .
           </span>
         </label>
-        <FieldError id={errorId("acceptTerms")} message={errors.acceptTerms?.[0]} />
+        <FieldError id={errorId("acceptTerms")} message={errorFor("acceptTerms")} />
       </div>
 
       {/* Honeypot anti-spam: oculto para personas, visible para bots. */}

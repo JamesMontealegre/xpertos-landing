@@ -3,17 +3,20 @@
 import { randomInt } from "node:crypto";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
+import {
+  acceptTermsError,
+  bioError,
+  categoriesError,
+  cityError,
+  emailError,
+  experienceYearsError,
+  fullNameError,
+  normalizePhone,
+  phoneError,
+  type ApplyValues,
+} from "@/lib/validation";
 
-export type ApplyFormValues = {
-  fullName: string;
-  email: string;
-  phone: string;
-  city: string;
-  categories: string[];
-  experienceYears: string;
-  bio: string;
-  acceptTerms: boolean;
-};
+export type ApplyFormValues = ApplyValues;
 
 export type ApplyFieldErrors = Partial<Record<keyof ApplyFormValues, string[]>>;
 
@@ -31,49 +34,26 @@ export type ApplyState =
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+/** Convierte una validación de src/lib/validation.ts en una regla de zod. */
+const checked = (check: (value: string) => string | null) =>
+  z.string().superRefine((value, ctx) => {
+    const message = check(value);
+    if (message) ctx.addIssue({ code: "custom", message });
+  });
+
+// Mismas reglas que el formulario en el navegador y que el registro de la app.
 const schema = z.object({
-  fullName: z
-    .string()
-    .trim()
-    .min(3, "Escribe tu nombre completo")
-    .max(120, "Máximo 120 caracteres"),
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .max(254, "Correo demasiado largo")
-    .pipe(z.email("Escribe un correo válido")),
-  phone: z
-    .string()
-    .trim()
-    .min(7, "Escribe un teléfono válido")
-    .max(20, "Teléfono demasiado largo")
-    .regex(/^\+?[0-9\s().-]{7,20}$/, "Usa solo números, espacios o +"),
-  city: z
-    .string()
-    .trim()
-    .min(2, "Escribe tu ciudad")
-    .max(80, "Máximo 80 caracteres"),
-  categories: z
-    .array(z.string().trim().min(1).max(80))
-    .min(1, "Elige al menos una categoría")
-    .max(8, "Elige máximo 8 categorías"),
-  experienceYears: z.preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.coerce
-      .number({ error: "Indica tus años de experiencia" })
-      .int("Debe ser un número entero")
-      .min(0, "No puede ser negativo")
-      .max(60, "Máximo 60 años"),
-  ),
-  bio: z
-    .string()
-    .trim()
-    .min(20, "Cuéntanos un poco más (mínimo 20 caracteres)")
-    .max(1000, "Máximo 1000 caracteres"),
-  acceptTerms: z.literal(true, {
-    error: "Debes aceptar los términos y el tratamiento de datos",
+  fullName: checked(fullNameError).transform((v) => v.trim().replace(/\s+/g, " ")),
+  email: checked(emailError).transform((v) => v.trim().toLowerCase()),
+  phone: checked(phoneError).transform(normalizePhone),
+  city: checked(cityError).transform((v) => v.trim()),
+  categories: z.array(z.string().trim().min(1).max(80)).superRefine((value, ctx) => {
+    const message = categoriesError(value);
+    if (message) ctx.addIssue({ code: "custom", message });
   }),
+  experienceYears: checked(experienceYearsError).transform(Number),
+  bio: checked(bioError).transform((v) => v.trim()),
+  acceptTerms: z.literal(true, { error: acceptTermsError(false) ?? undefined }),
 });
 
 const GENERIC_ERROR =

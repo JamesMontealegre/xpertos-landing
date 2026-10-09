@@ -41,3 +41,26 @@ body {
     scroll-behavior: auto;
   }
 }
+
+/* Loader de navegación: la X late con el mismo ritmo que en el panel y la app. */
+@keyframes xp-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.08);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .xp-beat {
+    animation: xp-beat 1.8s ease-in-out infinite;
+  }
+}

@@ -35,7 +35,7 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
   const formId = useId();
 
   if (state.status === "success") {
-    return <SuccessMessage email={state.email} fullName={state.fullName} />;
+    return <SuccessMessage email={state.email} fullName={state.fullName} accountCreated={state.accountCreated} />;
   }
 
   if (state.status === "duplicate") {
@@ -299,22 +299,38 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
-function NextSteps() {
+function NextSteps({ accountCreated = true }: { accountCreated?: boolean }) {
   return (
     <ol className="mt-5 space-y-3 text-left text-slate-700">
       <li className="flex gap-3">
         <StepNumber n={1} />
         <span>
-          Descarga o abre la{" "}
-          <a href={USERS_APP_URL} className="font-semibold text-primary underline-offset-2 hover:underline">
-            app Xpertos
-          </a>
-          .
+          {accountCreated
+            ? "Revisa tu correo: te enviamos tu clave temporal (mira también en spam o promociones)."
+            : "Abre la app Xpertos con la cuenta que ya tienes."}
         </span>
       </li>
       <li className="flex gap-3">
         <StepNumber n={2} />
-        <span>Regístrate con el mismo correo que usaste aquí.</span>
+        <span>
+          {accountCreated ? (
+            <>
+              Entra a la{" "}
+              <a href={USERS_APP_URL} className="font-semibold text-primary underline-offset-2 hover:underline">
+                app Xpertos
+              </a>{" "}
+              con tu correo y la clave temporal, y crea tu propia contraseña.
+            </>
+          ) : (
+            <>
+              Entra a la{" "}
+              <a href={USERS_APP_URL} className="font-semibold text-primary underline-offset-2 hover:underline">
+                app Xpertos
+              </a>{" "}
+              con tu correo y tu contraseña.
+            </>
+          )}
+        </span>
       </li>
       <li className="flex gap-3">
         <StepNumber n={3} />
@@ -336,7 +352,7 @@ function StepNumber({ n }: { n: number }) {
   );
 }
 
-function SuccessMessage({ email, fullName }: { email: string; fullName: string }) {
+function SuccessMessage({ email, fullName, accountCreated }: { email: string; fullName: string; accountCreated: boolean }) {
   return (
     <div role="status" className="rounded-xl border border-primary/30 bg-primary/5 p-6">
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white">
@@ -346,10 +362,18 @@ function SuccessMessage({ email, fullName }: { email: string; fullName: string }
         ¡Recibimos tu postulación{fullName ? `, ${fullName.split(" ")[0]}` : ""}!
       </h3>
       <p className="mt-2 text-slate-700">
-        La registramos con el correo <strong>{email}</strong>. Estos son los
-        siguientes pasos:
+        {accountCreated ? (
+          <>
+            Te enviamos un correo a <strong>{email}</strong> con tu clave temporal para entrar a la app y completar tu
+            postulación.
+          </>
+        ) : (
+          <>
+            La registramos con el correo <strong>{email}</strong>, que ya tiene cuenta en Xpertos.
+          </>
+        )}
       </p>
-      <NextSteps />
+      <NextSteps accountCreated={accountCreated} />
       <ButtonLink href={USERS_APP_URL} className="mt-6 w-full sm:w-auto">
         Abrir la app Xpertos
       </ButtonLink>

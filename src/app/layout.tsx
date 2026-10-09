@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Mulish } from "next/font/google";
+import { Suspense } from "react";
+import { NavigationLoader } from "@/components/navigation-loader";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from "@/lib/site";
 import "./globals.css";
 
@@ -53,7 +55,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="es"
       className={`${mulish.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        {children}
+        {/* Loader entre páginas: la X de Xpertos mientras carga la siguiente vista. */}
+        <Suspense fallback={null}>
+          <NavigationLoader />
+        </Suspense>
+      </body>
     </html>
   );
 }

@@ -20,11 +20,11 @@ export default function TermsPage() {
 
       <h2>1. Qué es Xpertos</h2>
       <p>
-        Xpertos es un intermediario que conecta a clientes con expertos
-        independientes en servicios para el hogar y la obra. Xpertos verifica la
-        identidad y documentos de los expertos, asigna los servicios, administra
-        el pago por etapas y genera el contrato digital entre las partes.
-        Xpertos no ejecuta directamente los servicios.
+        Xpertos presta servicios para el hogar y la obra por medio de una red
+        de expertos independientes verificados. Xpertos verifica la identidad y
+        documentos de los expertos, asigna cada servicio a un experto de su red,
+        recibe el pago del cliente y celebra con él el contrato del servicio. El
+        experto asignado ejecuta el trabajo en nombre de Xpertos.
       </p>
 
       <h2>2. Expertos independientes</h2>
@@ -38,11 +38,12 @@ export default function TermsPage() {
         social.
       </p>
 
-      <h2>3. Contrato entre cliente y experto</h2>
+      <h2>3. Contrato entre el cliente y Xpertos</h2>
       <p>
-        Cada servicio asignado se formaliza mediante un contrato de prestación
-        de servicios por obra entre el cliente y el experto, con Xpertos como
-        intermediario. El contrato se firma electrónicamente dentro de la app.
+        Cada servicio se formaliza mediante un contrato de prestación de
+        servicios entre el cliente y Xpertos. El experto asignado no es parte
+        del contrato: Xpertos responde ante el cliente por el trabajo. Xpertos
+        emite el contrato y el cliente lo firma electrónicamente dentro de la app.
         Conforme a la Ley 527 de 1999 y el Decreto 2364 de 2012, la firma
         electrónica y los mensajes de datos tienen validez y fuerza probatoria.
       </p>

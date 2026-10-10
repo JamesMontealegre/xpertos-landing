@@ -14,7 +14,7 @@ const FAQS = [
   {
     question: "¿Qué pasa si algo sale mal?",
     answer:
-      "Xpertos acompaña el servicio de principio a fin. Si hay un problema, media entre las partes, puede reasignar el servicio y el pago por etapas evita que pierdas el dinero de trabajo no realizado. Todo queda respaldado por el contrato digital.",
+      "Xpertos responde por el servicio de principio a fin: tu contrato es con nosotros. Si hay un problema, lo resolvemos con el experto o reasignamos el servicio, y el pago por etapas evita que pierdas el dinero de trabajo no realizado. Todo queda respaldado por el contrato digital.",
   },
   {
     question: "¿Los expertos son empleados de Xpertos?",

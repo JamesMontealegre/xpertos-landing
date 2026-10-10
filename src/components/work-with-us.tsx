@@ -6,7 +6,7 @@ import { ExpertApplicationForm } from "@/components/expert-application-form";
 const PERKS = [
   "Tú pones tu horario: sin turnos ni exclusividad.",
   "Recibes trabajos cerca de ti, en tu categoría.",
-  "Pagos claros por etapas, verificados por nuestro equipo.",
+  "Cobramos al cliente por ti y te pagamos tu cotización, menos una comisión del 5 %.",
   "Un operador humano te acompaña en cada servicio.",
 ];
 

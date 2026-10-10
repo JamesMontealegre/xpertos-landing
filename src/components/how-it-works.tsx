@@ -7,14 +7,14 @@ const STEPS = [
       "Describe el trabajo, sube fotos y dinos cuándo estás disponible. En minutos, desde la app.",
   },
   {
-    title: "Asignamos al experto ideal",
+    title: "Asignamos al experto y te cotizamos",
     description:
-      "Un operador de Xpertos revisa tu solicitud, elige al experto verificado adecuado y acuerdan contigo el precio por etapas.",
+      "Un operador de Xpertos elige al experto verificado adecuado, que revisa el trabajo y cotiza. Tú eliges: solo mano de obra o todo incluido, con los materiales por nuestra cuenta.",
   },
   {
-    title: "Pagas por etapas y firmas en línea",
+    title: "Pagas una vez y firmas en línea",
     description:
-      "Pagas cada etapa a través de Xpertos y firmas un contrato digital. Al terminar, calificas el servicio.",
+      "Pagas el total a Xpertos, firmas el contrato desde la app o tu correo y la obra inicia en la fecha acordada. Al terminar, verificamos contigo que todo quedó bien.",
   },
 ];
 

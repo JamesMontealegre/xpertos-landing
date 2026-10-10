@@ -2,7 +2,7 @@ export const SITE_NAME = "Xpertos";
 export const SITE_TITLE =
   "Xpertos — Expertos verificados para tu hogar y tu obra";
 export const SITE_DESCRIPTION =
-  "Contrata expertos verificados para tu hogar u obra, con pagos protegidos por etapas y contrato digital. Obra civil, aseo, carpintería, plomería, electricidad, pintura y más.";
+  "Contrata expertos verificados para tu hogar u obra, con pago protegido y contrato digital. Obra civil, aseo, carpintería, plomería, electricidad, pintura y más.";
 export const CONTACT_EMAIL = "hola@xpertos.com.co";
 
 export const USERS_APP_URL =

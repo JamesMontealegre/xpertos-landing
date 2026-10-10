@@ -4,7 +4,7 @@ import { ArrowRightIcon, CheckIcon } from "@/components/icons";
 
 const HIGHLIGHTS = [
   "Expertos verificados por un operador humano",
-  "Pagas por etapas, con el dinero protegido",
+  "Un solo pago a Xpertos, con tu dinero protegido",
   "Contrato digital con validez legal",
 ];
 
@@ -29,9 +29,9 @@ export function Hero() {
             Contrata expertos verificados para tu hogar u obra
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-slate-600 sm:text-xl">
-            Con pagos protegidos por etapas y contrato digital. Tú cuentas qué
-            necesitas; nosotros asignamos al experto ideal y acompañamos el
-            servicio de principio a fin.
+            Con pago protegido y contrato digital. Tú cuentas qué necesitas;
+            nosotros asignamos al experto ideal y respondemos por el servicio de
+            principio a fin.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <ButtonLink href={USERS_APP_URL} className="w-full sm:w-auto">

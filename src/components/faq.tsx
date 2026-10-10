@@ -9,17 +9,17 @@ const FAQS = [
   {
     question: "¿Cómo pago?",
     answer:
-      "El precio se acuerda por etapas (por ejemplo, un anticipo y una entrega). Pagas cada etapa a través de Xpertos y subes tu comprobante; nuestro equipo lo verifica antes de que la etapa quede como pagada. Nunca tienes que adelantar dinero directamente al experto.",
+      "Cuando el experto cotiza, Xpertos te presenta dos opciones: solo mano de obra o todo incluido, con los materiales por nuestra cuenta. Eliges una y pagas el total en un solo pago a las cuentas de Xpertos; subes el comprobante en la app y lo verificamos en el banco. Nunca le adelantas dinero directamente al experto.",
   },
   {
     question: "¿Qué pasa si algo sale mal?",
     answer:
-      "Xpertos responde por el servicio de principio a fin: tu contrato es con nosotros. Si hay un problema, lo resolvemos con el experto o reasignamos el servicio, y el pago por etapas evita que pierdas el dinero de trabajo no realizado. Todo queda respaldado por el contrato digital.",
+      "Xpertos responde por el servicio de principio a fin: tu contrato es con nosotros. Si hay un problema, lo resolvemos con el experto o reasignamos el servicio. Antes de dar el trabajo por terminado verificamos contigo que todo quedó bien, y respondemos por él durante 30 días. Todo queda respaldado por el contrato digital.",
   },
   {
     question: "¿Los expertos son empleados de Xpertos?",
     answer:
-      "No. Los expertos son profesionales independientes. Xpertos intermedia entre tú y el experto, valida su identidad y documentos, y protege el pago por etapas.",
+      "No. Los expertos son profesionales independientes de la red de Xpertos. Validamos su identidad y documentos, les asignamos los servicios y tu pago va a Xpertos, que responde por el trabajo.",
   },
   {
     question: "¿En qué ciudades operan?",

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Política de privacidad" updatedAt="7 de octubre de 2026">
+    <LegalPage title="Política de privacidad" updatedAt="9 de octubre de 2026">
       <p>
         Esta política describe cómo Xpertos trata los datos personales de
         clientes, expertos y aspirantes, en cumplimiento de la Ley 1581 de 2012,
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
           antecedentes, certificados y portafolio).
         </li>
         <li>
-          <strong>Datos del servicio:</strong> estados, etapas, contratos y
+          <strong>Datos del servicio:</strong> estados, cotizaciones, pagos, contratos y
           firmas electrónicas (incluidos fecha, dirección IP y navegador usados
           al firmar), calificaciones y comentarios.
         </li>
@@ -50,7 +50,7 @@ export default function PrivacyPage() {
       <h2>3. Para qué usamos los datos</h2>
       <ul>
         <li>Verificar la identidad e idoneidad de los expertos.</li>
-        <li>Asignar servicios, coordinar su ejecución y administrar los pagos por etapas.</li>
+        <li>Asignar servicios, coordinar su ejecución y administrar el pago del cliente y el pago a los expertos.</li>
         <li>Generar y conservar los contratos digitales y su evidencia de firma.</li>
         <li>Atender solicitudes, quejas y reclamos.</li>
         <li>Enviar comunicaciones relacionadas con el servicio.</li>

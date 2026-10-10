@@ -15,9 +15,9 @@ const BENEFITS = [
   },
   {
     icon: LockIcon,
-    title: "Pagos por etapas protegidos",
+    title: "Tu pago, protegido",
     description:
-      "Acuerdas el precio por etapas y pagas a través de Xpertos. El dinero se libera a medida que avanza el trabajo.",
+      "Pagas una sola vez a Xpertos, nunca directamente al experto. Al experto le pagamos según el avance verificado, y respondemos por el trabajo.",
   },
   {
     icon: FileSignatureIcon,
@@ -29,7 +29,7 @@ const BENEFITS = [
     icon: HeadsetIcon,
     title: "Acompañamiento durante el servicio",
     description:
-      "Nuestro equipo sigue el avance, media si algo no sale como esperabas y te ayuda hasta que el trabajo quede cerrado.",
+      "Nuestro equipo sigue el avance, resuelve si algo no sale como esperabas y verifica contigo que el trabajo quedó bien antes de cerrarlo.",
   },
 ];
 
@@ -39,7 +39,7 @@ export function WhyXpertos() {
       <Container>
         <SectionHeading
           eyebrow="Por qué Xpertos"
-          title="Confianza en cada etapa"
+          title="Confianza de principio a fin"
           description="Hacemos a mano lo que otras plataformas dejan al azar: verificar, asignar y proteger el pago."
         />
         <ul className="mt-12 grid gap-6 sm:grid-cols-2">

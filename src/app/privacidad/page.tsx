@@ -31,7 +31,8 @@ export default function PrivacyPage() {
       <ul>
         <li>
           <strong>Clientes:</strong> nombre, correo, teléfono, ciudad, dirección
-          del servicio, fotos del requerimiento y comprobantes de pago.
+          del servicio, tipo y número de documento de identidad (para los
+          contratos), fotos del requerimiento y comprobantes de pago.
         </li>
         <li>
           <strong>Aspirantes y expertos:</strong> nombre, correo, teléfono,
@@ -41,9 +42,10 @@ export default function PrivacyPage() {
           antecedentes, certificados y portafolio).
         </li>
         <li>
-          <strong>Datos del servicio:</strong> estados, cotizaciones, pagos, contratos y
-          firmas electrónicas (incluidos fecha, dirección IP y navegador usados
-          al firmar), calificaciones y comentarios.
+          <strong>Datos del servicio:</strong> estados, cotizaciones, pagos, contratos,
+          actas de inicio y firmas electrónicas (la firma a mano alzada que se
+          traza en la app y la fecha, la dirección IP y el dispositivo usados al
+          firmar), calificaciones y comentarios.
         </li>
       </ul>
 
@@ -51,7 +53,7 @@ export default function PrivacyPage() {
       <ul>
         <li>Verificar la identidad e idoneidad de los expertos.</li>
         <li>Asignar servicios, coordinar su ejecución y administrar el pago del cliente y el pago a los expertos.</li>
-        <li>Generar y conservar los contratos digitales y su evidencia de firma.</li>
+        <li>Generar y conservar los contratos digitales, las actas de inicio y su evidencia de firma.</li>
         <li>Atender solicitudes, quejas y reclamos.</li>
         <li>Enviar comunicaciones relacionadas con el servicio.</li>
       </ul>
@@ -69,8 +71,9 @@ export default function PrivacyPage() {
       <p>
         Conservamos los datos mientras la cuenta esté activa y durante los
         plazos legales aplicables para contratos y pagos. Los documentos de
-        verificación se almacenan en repositorios privados con acceso
-        restringido al equipo de operación.
+        verificación, los documentos de identidad y las firmas se almacenan en
+        repositorios privados con acceso restringido: cada persona ve los suyos
+        y el equipo de operación los necesarios para administrar el servicio.
       </p>
 
       <h2>6. Tus derechos</h2>

@@ -13,9 +13,9 @@ const STEPS = [
       "Un operador de Xpertos elige al experto verificado adecuado, que revisa el trabajo y cotiza. Tú eliges: solo mano de obra o todo incluido, con los materiales por nuestra cuenta.",
   },
   {
-    title: "Pagas una vez y firmas en línea",
+    title: "Pagas a tu ritmo y firmas en línea",
     description:
-      "Pagas el total a Xpertos, firmas el contrato desde la app o tu correo y la obra inicia en la fecha acordada. Al terminar, verificamos contigo que todo quedó bien.",
+      "Al aceptar la cotización recibes tu plan de pagos: de contado o con un anticipo y cuotas durante la obra. Pagas a Xpertos, firmas el contrato desde la app o tu correo y la obra inicia en la fecha acordada. Al terminar, verificamos contigo que todo quedó bien.",
   },
 ];
 

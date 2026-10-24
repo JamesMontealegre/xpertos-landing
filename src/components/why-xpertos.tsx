@@ -18,7 +18,7 @@ const BENEFITS = [
     icon: LockIcon,
     title: "Tu pago, protegido",
     description:
-      "Pagas una sola vez a Xpertos, nunca directamente al experto. Al experto le pagamos según el avance verificado, y respondemos por el trabajo.",
+      "Pagas a Xpertos, nunca directamente al experto: de contado o con un plan de pagos durante la obra. Al experto le pagamos según el avance verificado, y respondemos por el trabajo.",
   },
   {
     icon: FileSignatureIcon,

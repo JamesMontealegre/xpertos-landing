@@ -58,14 +58,19 @@ export default function TermsPage() {
           servicio de Xpertos.
         </li>
         <li>
-          El cliente paga el total en un solo pago a Xpertos, por transferencia
-          o consignación a las cuentas indicadas, y adjunta el comprobante en la
-          app. El pago se entiende recibido cuando Xpertos lo verifica en el
-          banco.
+          Al aceptar la cotización, el cliente recibe un plan de pagos: de
+          contado o, según el valor y la duración de la obra, con un anticipo
+          del 30 % antes del inicio y el saldo en cuotas durante el trabajo, sin
+          recargo. Paga a Xpertos por transferencia o consignación (adjuntando
+          el comprobante en la app) o en línea desde la app. Un pago por
+          transferencia se entiende recibido cuando Xpertos lo verifica en el
+          banco; uno en línea, cuando la pasarela lo aprueba.
         </li>
         <li>
-          La obra inicia 2 días hábiles después del pago verificado si es solo
-          mano de obra, y 5 si es todo incluido.
+          La obra inicia 2 días hábiles después de recibido el pago (o el
+          anticipo completo) si es solo mano de obra, y 5 si es todo incluido.
+          Si una cuota no se paga a tiempo, Xpertos puede pausar la obra hasta
+          que el cliente se ponga al día.
         </li>
         <li>
           Xpertos le paga al experto su cotización menos la comisión por uso de

@@ -9,7 +9,7 @@ const FAQS = [
   {
     question: "¿Cómo pago?",
     answer:
-      "Cuando el experto cotiza, Xpertos te presenta dos opciones: solo mano de obra o todo incluido, con los materiales por nuestra cuenta. Eliges una y pagas el total en un solo pago a las cuentas de Xpertos; subes el comprobante en la app y lo verificamos en el banco. Nunca le adelantas dinero directamente al experto.",
+      "Cuando el experto cotiza, Xpertos te presenta dos opciones: solo mano de obra o todo incluido, con los materiales por nuestra cuenta. Al elegir recibes tu plan de pagos: de contado o, según el valor y la duración de la obra, con un anticipo del 30 % y cuotas durante el trabajo. Pagas a Xpertos por transferencia o en línea desde la app; nunca le adelantas dinero directamente al experto.",
   },
   {
     question: "¿Qué pasa si algo sale mal?",

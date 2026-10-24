@@ -5,7 +5,7 @@ import { BackgroundVideo } from "@/components/background-video";
 
 const HIGHLIGHTS = [
   "Expertos verificados por un operador humano",
-  "Un solo pago a Xpertos, con tu dinero protegido",
+  "Plan de pagos a tu medida, con tu dinero protegido",
   "Contrato digital con validez legal",
 ];
 

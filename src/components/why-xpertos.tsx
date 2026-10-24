@@ -1,4 +1,5 @@
 import { Container, SectionHeading } from "@/components/ui";
+import { BackgroundVideo } from "@/components/background-video";
 import {
   FileSignatureIcon,
   HeadsetIcon,
@@ -35,8 +36,19 @@ const BENEFITS = [
 
 export function WhyXpertos() {
   return (
-    <section id="por-que-xpertos" className="scroll-mt-20 py-16 sm:py-24">
-      <Container>
+    <section id="por-que-xpertos" className="relative scroll-mt-20 overflow-hidden py-16 sm:py-24">
+      {/* Video del equipo revisando una obra, bajo un velo claro que se funde con las secciones vecinas. */}
+      <BackgroundVideo src="/videos/equipo.mp4" poster="/videos/equipo.jpg" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-surface/65" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-linear-to-b from-white to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-surface to-transparent"
+      />
+      <Container className="relative">
         <SectionHeading
           eyebrow="Por qué Xpertos"
           title="Confianza de principio a fin"

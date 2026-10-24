@@ -1,4 +1,5 @@
 import { Container, SectionHeading } from "@/components/ui";
+import { BackgroundVideo } from "@/components/background-video";
 
 const STEPS = [
   {
@@ -20,8 +21,19 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section id="como-funciona" className="scroll-mt-20 py-16 sm:py-24">
-      <Container>
+    <section id="como-funciona" className="relative scroll-mt-20 overflow-hidden py-16 sm:py-24">
+      {/* Video de planos de fondo bajo un velo claro que se funde arriba y abajo con las secciones vecinas. */}
+      <BackgroundVideo src="/videos/planos.mp4" poster="/videos/planos.jpg" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-surface/65" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-linear-to-b from-surface to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-white to-transparent"
+      />
+      <Container className="relative">
         <SectionHeading
           eyebrow="Cómo funciona"
           title="Tres pasos para resolver tu hogar u obra"

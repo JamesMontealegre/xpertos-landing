@@ -198,7 +198,7 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
             type="text"
             autoComplete="address-level2"
             required
-            placeholder="Bogotá, Medellín…"
+            placeholder="Bogotá, Cali, Barranquilla…"
             defaultValue={values.city}
             aria-invalid={Boolean(errorFor("city"))}
             aria-describedby={errorFor("city") ? errorId("city") : undefined}

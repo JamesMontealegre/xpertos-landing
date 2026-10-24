@@ -24,7 +24,7 @@ const FAQS = [
   {
     question: "¿En qué ciudades operan?",
     answer:
-      "Estamos en piloto en Bogotá y Medellín. Si estás en otra ciudad, déjanos tu solicitud y te avisaremos cuando lleguemos.",
+      "Operamos en toda Colombia. Cuéntanos en tu solicitud dónde es el trabajo y te asignamos un experto verificado de tu zona; si aún no tenemos uno disponible cerca, te avisamos.",
   },
 ];
 

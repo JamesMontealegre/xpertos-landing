@@ -26,15 +26,16 @@ export function Hero() {
         <div className="mx-auto max-w-3xl text-center">
           <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-white/90 backdrop-blur">
             <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
-            Piloto en Bogotá y Medellín
+            Una nueva manera de trabajar
           </p>
           <h1 className="mt-6 text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
             Contrata expertos verificados para tu hogar u obra
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-white/85 sm:text-xl">
-            Con pago protegido y contrato digital. Tú cuentas qué necesitas;
-            nosotros asignamos al experto ideal y respondemos por el servicio de
-            principio a fin.
+            Xpertos es una red de profesionales verificados en toda Colombia,
+            listos para tus obras civiles y trabajos del hogar, a pequeña o gran
+            escala. Tú nos cuentas qué necesitas y nosotros nos ocupamos del
+            resto: soluciones a tu medida y acompañamiento de principio a fin.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <ButtonLink href={USERS_APP_URL} variant="accent" className="w-full sm:w-auto">

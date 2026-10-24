@@ -24,7 +24,7 @@ export async function Services() {
         <SectionHeading
           eyebrow="Servicios"
           title="¿Qué necesitas resolver?"
-          description="Estas son las categorías disponibles en el piloto. Todos los expertos pasan por la misma verificación."
+          description="Estas son las categorías en las que trabajamos. Todos los expertos pasan por la misma verificación."
         />
         <ul className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {categories.map((category) => (

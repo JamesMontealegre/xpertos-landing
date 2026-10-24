@@ -31,8 +31,7 @@ export const metadata: Metadata = {
     "plomería",
     "electricidad",
     "aseo",
-    "Bogotá",
-    "Medellín",
+    "Colombia",
   ],
   openGraph: {
     type: "website",

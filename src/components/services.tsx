@@ -2,13 +2,25 @@ import { getCategories } from "@/lib/categories";
 import { USERS_APP_URL } from "@/lib/site";
 import { ButtonLink, Container, SectionHeading } from "@/components/ui";
 import { CategoryIcon } from "@/components/icons";
+import { BackgroundVideo } from "@/components/background-video";
 
 export async function Services() {
   const categories = await getCategories();
 
   return (
-    <section id="servicios" className="scroll-mt-20 bg-white py-16 sm:py-24">
-      <Container>
+    <section id="servicios" className="relative scroll-mt-20 overflow-hidden bg-white py-16 sm:py-24">
+      {/* Video de planos y casco de fondo bajo un velo blanco que se funde arriba y abajo con las secciones vecinas. */}
+      <BackgroundVideo src="/videos/casco.mp4" poster="/videos/casco.jpg" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-white/70" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-linear-to-b from-white to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-white to-transparent"
+      />
+      <Container className="relative">
         <SectionHeading
           eyebrow="Servicios"
           title="¿Qué necesitas resolver?"

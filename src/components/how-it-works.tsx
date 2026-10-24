@@ -24,7 +24,7 @@ export function HowItWorks() {
     <section id="como-funciona" className="relative scroll-mt-20 overflow-hidden py-16 sm:py-24">
       {/* Video de planos de fondo bajo un velo claro que se funde arriba y abajo con las secciones vecinas. */}
       <BackgroundVideo src="/videos/planos.mp4" poster="/videos/planos.jpg" />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-surface/65" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-slate-300/55" />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-linear-to-b from-surface to-transparent"

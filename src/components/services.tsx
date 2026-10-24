@@ -11,7 +11,7 @@ export async function Services() {
     <section id="servicios" className="relative scroll-mt-20 overflow-hidden bg-white py-16 sm:py-24">
       {/* Video de planos y casco de fondo bajo un velo blanco que se funde arriba y abajo con las secciones vecinas. */}
       <BackgroundVideo src="/videos/casco.mp4" poster="/videos/casco.jpg" />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-white/70" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-slate-200/60" />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-linear-to-b from-white to-transparent"

@@ -61,10 +61,12 @@ export default function TermsPage() {
           Al aceptar la cotización, el cliente recibe un plan de pagos: de
           contado o, según el valor y la duración de la obra, con un anticipo
           del 30 % antes del inicio y el saldo en cuotas durante el trabajo, sin
-          recargo. Paga a Xpertos por transferencia o consignación (adjuntando
-          el comprobante en la app) o en línea desde la app. Un pago por
-          transferencia se entiende recibido cuando Xpertos lo verifica en el
-          banco; uno en línea, cuando la pasarela lo aprueba.
+          intereses. Paga a Xpertos por transferencia o consignación (adjuntando
+          el comprobante en la app), sin costo adicional, o en línea desde la
+          app; los pagos en línea incluyen el costo de la transacción de la
+          pasarela de pagos, a cargo del cliente. Un pago por transferencia se
+          entiende recibido cuando Xpertos lo verifica en el banco; uno en
+          línea, cuando la pasarela lo aprueba.
         </li>
         <li>
           La obra inicia 2 días hábiles después de recibido el pago (o el

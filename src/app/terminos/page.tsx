@@ -75,8 +75,9 @@ export default function TermsPage() {
           que el cliente se ponga al día.
         </li>
         <li>
-          Xpertos le paga al experto su cotización menos la comisión por uso de
-          la plataforma, al terminar el trabajo o con la periodicidad acordada.
+          Xpertos le paga al experto su cotización menos una comisión del 5 %
+          por uso de la plataforma, al terminar el trabajo o con la periodicidad
+          acordada. El experto acepta esta comisión al postularse.
         </li>
         <li>No se deben realizar pagos directos entre cliente y experto.</li>
       </ul>

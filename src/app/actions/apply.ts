@@ -3,15 +3,15 @@
 import { randomInt } from "node:crypto";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
+import { municipalityName } from "@/lib/divipola";
 import {
   acceptTermsError,
-  bioError,
-  categoriesError,
-  cityError,
+  departmentError,
   emailError,
-  experienceYearsError,
   fullNameError,
+  municipalityError,
   normalizePhone,
+  occupationError,
   phoneError,
   type ApplyValues,
 } from "@/lib/validation";
@@ -31,9 +31,6 @@ export type ApplyState =
   | { status: "duplicate"; message: string; email: string }
   | { status: "success"; email: string; fullName: string; accountCreated: boolean };
 
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
 /** Convierte una validación de src/lib/validation.ts en una regla de zod. */
 const checked = (check: (value: string) => string | null) =>
   z.string().superRefine((value, ctx) => {
@@ -42,19 +39,20 @@ const checked = (check: (value: string) => string | null) =>
   });
 
 // Mismas reglas que el formulario en el navegador y que el registro de la app.
-const schema = z.object({
-  fullName: checked(fullNameError).transform((v) => v.trim().replace(/\s+/g, " ")),
-  email: checked(emailError).transform((v) => v.trim().toLowerCase()),
-  phone: checked(phoneError).transform(normalizePhone),
-  city: checked(cityError).transform((v) => v.trim()),
-  categories: z.array(z.string().trim().min(1).max(80)).superRefine((value, ctx) => {
-    const message = categoriesError(value);
-    if (message) ctx.addIssue({ code: "custom", message });
-  }),
-  experienceYears: checked(experienceYearsError).transform(Number),
-  bio: checked(bioError).transform((v) => v.trim()),
-  acceptTerms: z.literal(true, { error: acceptTermsError(false) ?? undefined }),
-});
+const schema = z
+  .object({
+    fullName: checked(fullNameError).transform((v) => v.trim().replace(/\s+/g, " ")),
+    email: checked(emailError).transform((v) => v.trim().toLowerCase()),
+    phone: checked(phoneError).transform(normalizePhone),
+    department: checked(departmentError),
+    municipality: z.string(),
+    occupation: checked(occupationError),
+    acceptTerms: z.literal(true, { error: acceptTermsError(false) ?? undefined }),
+  })
+  .superRefine((value, ctx) => {
+    const message = municipalityError(value.municipality, value.department) ?? (municipalityName(value.municipality) ? null : "Elige tu municipio.");
+    if (message) ctx.addIssue({ code: "custom", path: ["municipality"], message });
+  });
 
 const GENERIC_ERROR =
   "No pudimos guardar tu postulación. Inténtalo de nuevo en unos minutos o escríbenos a hola@xpertos.com.co.";
@@ -68,12 +66,9 @@ function readValues(formData: FormData): ApplyFormValues {
     fullName: str("fullName"),
     email: str("email"),
     phone: str("phone"),
-    city: str("city"),
-    categories: formData
-      .getAll("categories")
-      .filter((v): v is string => typeof v === "string"),
-    experienceYears: str("experienceYears"),
-    bio: str("bio"),
+    department: str("department"),
+    municipality: str("municipality"),
+    occupation: str("occupation"),
     acceptTerms: formData.get("acceptTerms") === "on",
   };
 }
@@ -121,35 +116,6 @@ export async function submitExpertApplication(
 
   try {
     const supabase = createServiceClient();
-
-    // Resolver categorías: normalmente llegan uuids; si la landing usó la
-    // lista de respaldo llegan slugs y los convertimos aquí.
-    const uuids = data.categories.filter((c) => UUID_RE.test(c));
-    const slugs = data.categories.filter((c) => !UUID_RE.test(c));
-    const lookup = await supabase
-      .from("service_categories")
-      .select("id, slug")
-      .eq("active", true)
-      .or(
-        [
-          uuids.length ? `id.in.(${uuids.join(",")})` : null,
-          slugs.length ? `slug.in.(${slugs.join(",")})` : null,
-        ]
-          .filter(Boolean)
-          .join(","),
-      );
-    if (lookup.error) throw lookup.error;
-    const categoryIds = Array.from(new Set((lookup.data ?? []).map((c) => c.id)));
-    if (categoryIds.length === 0) {
-      return {
-        status: "error",
-        message: "Revisa los campos marcados.",
-        fieldErrors: {
-          categories: ["Las categorías elegidas ya no están disponibles. Recarga la página."],
-        },
-        values,
-      };
-    }
 
     // Duplicados: misma dirección (sin distinguir mayúsculas) y no rechazada.
     const existing = await supabase
@@ -216,7 +182,7 @@ export async function submitExpertApplication(
         user_metadata: {
           full_name: data.fullName,
           phone: data.phone,
-          city: data.city,
+          city: municipalityName(data.municipality),
           must_change_password: true,
         },
       });
@@ -230,10 +196,8 @@ export async function submitExpertApplication(
       p_full_name: data.fullName,
       p_email: data.email,
       p_phone: data.phone,
-      p_city: data.city,
-      p_category_ids: categoryIds,
-      p_experience_years: data.experienceYears,
-      p_bio: data.bio,
+      p_municipality_code: data.municipality,
+      p_occupation_code: data.occupation,
       p_temp_password: tempPassword ?? undefined,
     });
     if (insert.error) {

@@ -1,4 +1,4 @@
-import { getCategories } from "@/lib/categories";
+import { getOccupations } from "@/lib/occupations";
 import { Container } from "@/components/ui";
 import { CheckIcon } from "@/components/icons";
 import { ExpertApplicationForm } from "@/components/expert-application-form";
@@ -6,13 +6,13 @@ import { BackgroundVideo } from "@/components/background-video";
 
 const PERKS = [
   "Tú pones tu horario: sin turnos ni exclusividad.",
-  "Recibes trabajos cerca de ti, en tu categoría.",
-  "Cobramos al cliente por ti y te pagamos tu cotización, menos una comisión del 5 %.",
+  "Recibes trabajos cerca de ti, de tu oficio.",
+  "Le cobramos al cliente por ti: no tienes que perseguir pagos.",
   "Un operador humano te acompaña en cada servicio.",
 ];
 
 export async function WorkWithUs() {
-  const categories = await getCategories();
+  const occupations = await getOccupations();
 
   return (
     <section id="trabaja-con-nosotros" className="relative scroll-mt-20 overflow-hidden bg-brand-950 py-20 sm:py-28">
@@ -41,8 +41,8 @@ export async function WorkWithUs() {
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-white/85">
               Si eres maestro de obra, plomero, electricista, carpintero o
-              trabajas en cualquiera de nuestras categorías, postúlate. Nosotros
-              conseguimos los clientes y protegemos tu pago.
+              tienes otro oficio para el hogar, postúlate. Nosotros conseguimos
+              los clientes y protegemos tu pago.
             </p>
             <ul className="mt-6 space-y-3">
               {PERKS.map((perk) => (
@@ -58,7 +58,7 @@ export async function WorkWithUs() {
             </p>
           </div>
           <div className="rounded-xl border border-line bg-white p-6 shadow-sm sm:p-8 lg:col-span-3">
-            <ExpertApplicationForm categories={categories} />
+            <ExpertApplicationForm occupations={occupations} />
           </div>
         </div>
       </Container>

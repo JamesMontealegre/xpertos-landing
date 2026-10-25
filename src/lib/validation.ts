@@ -46,33 +46,19 @@ export function cleanPhoneInput(value: string): string {
   return value.replace(/[^\d\s+-]/g, "");
 }
 
-export function cityError(value: string): string | null {
-  const city = value.trim();
-  if (!city) return "Escribe tu ciudad.";
-  if (city.length > 80) return "Máximo 80 caracteres.";
-  if (city.length < 3 || !/^[\p{L}][\p{L}\s.'-]*$/u.test(city)) return "Escribe una ciudad válida.";
+/** Departamento y municipio: códigos DIVIPOLA del DANE (2 y 5 dígitos; el municipio empieza por su departamento). */
+export function departmentError(value: string): string | null {
+  return /^\d{2}$/.test(value) ? null : "Elige tu departamento.";
+}
+
+export function municipalityError(value: string, department: string): string | null {
+  if (!department) return "Primero elige tu departamento.";
+  if (!/^\d{5}$/.test(value) || !value.startsWith(department)) return "Elige tu municipio.";
   return null;
 }
 
-export function categoriesError(value: string[]): string | null {
-  if (value.length === 0) return "Elige al menos una categoría.";
-  if (value.length > 8) return "Elige máximo 8 categorías.";
-  return null;
-}
-
-export function experienceYearsError(value: string): string | null {
-  if (!value.trim()) return "Indica tus años de experiencia.";
-  const years = Number(value);
-  if (!Number.isInteger(years)) return "Escribe un número entero.";
-  if (years < 0 || years > 60) return "Escribe un número entre 0 y 60.";
-  return null;
-}
-
-export function bioError(value: string): string | null {
-  const bio = value.trim();
-  if (bio.length < 20) return "Cuéntanos un poco más sobre tu experiencia (mínimo 20 caracteres).";
-  if (bio.length > 1000) return "Máximo 1000 caracteres.";
-  return null;
+export function occupationError(value: string): string | null {
+  return /^[a-z0-9-]{2,40}$/.test(value) ? null : "Elige tu ocupación.";
 }
 
 export function acceptTermsError(value: boolean): string | null {
@@ -83,10 +69,9 @@ export type ApplyValues = {
   fullName: string;
   email: string;
   phone: string;
-  city: string;
-  categories: string[];
-  experienceYears: string;
-  bio: string;
+  department: string;
+  municipality: string;
+  occupation: string;
   acceptTerms: boolean;
 };
 
@@ -101,26 +86,15 @@ export function applyFieldError(field: ApplyField, values: ApplyValues): string 
       return emailError(values.email);
     case "phone":
       return phoneError(values.phone);
-    case "city":
-      return cityError(values.city);
-    case "categories":
-      return categoriesError(values.categories);
-    case "experienceYears":
-      return experienceYearsError(values.experienceYears);
-    case "bio":
-      return bioError(values.bio);
+    case "department":
+      return departmentError(values.department);
+    case "municipality":
+      return municipalityError(values.municipality, values.department);
+    case "occupation":
+      return occupationError(values.occupation);
     case "acceptTerms":
       return acceptTermsError(values.acceptTerms);
   }
 }
 
-export const APPLY_FIELDS: ApplyField[] = [
-  "fullName",
-  "email",
-  "phone",
-  "city",
-  "categories",
-  "experienceYears",
-  "bio",
-  "acceptTerms",
-];
+export const APPLY_FIELDS: ApplyField[] = ["fullName", "phone", "email", "department", "municipality", "occupation", "acceptTerms"];

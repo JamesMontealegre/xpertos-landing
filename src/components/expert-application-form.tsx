@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useId, useState, type FormEvent } from "react";
-import type { Category } from "@/lib/categories";
+import { useActionState, useId, useState, type FormEvent, type ReactNode } from "react";
+import type { Occupation } from "@/lib/occupations";
+import { DEPARTMENTS, MUNICIPALITIES } from "@/lib/divipola";
 import { USERS_APP_URL } from "@/lib/site";
 import {
   submitExpertApplication,
@@ -9,17 +10,17 @@ import {
   type ApplyState,
 } from "@/app/actions/apply";
 import { Button, ButtonLink } from "@/components/ui";
-import { CheckIcon } from "@/components/icons";
+import { CheckIcon, ChevronDownIcon } from "@/components/icons";
 import { APPLY_FIELDS, applyFieldError, cleanPhoneInput, type ApplyField } from "@/lib/validation";
 
+// Valle del Cauca viene elegido: ahí arranca Xpertos.
 const EMPTY_VALUES: ApplyFormValues = {
   fullName: "",
   email: "",
   phone: "",
-  city: "",
-  categories: [],
-  experienceYears: "",
-  bio: "",
+  department: "76",
+  municipality: "",
+  occupation: "",
   acceptTerms: false,
 };
 
@@ -35,20 +36,20 @@ function readForm(form: HTMLFormElement): ApplyFormValues {
     fullName: str("fullName"),
     email: str("email"),
     phone: str("phone"),
-    city: str("city"),
-    categories: data.getAll("categories").filter((v): v is string => typeof v === "string"),
-    experienceYears: str("experienceYears"),
-    bio: str("bio"),
+    department: str("department"),
+    municipality: str("municipality"),
+    occupation: str("occupation"),
     acceptTerms: data.get("acceptTerms") === "on",
   };
 }
 
 const isApplyField = (name: string): name is ApplyField => (APPLY_FIELDS as string[]).includes(name);
 
+// Letra de 18 px y campos de 56 px de alto: cómodos para leer y tocar a cualquier edad.
 const inputClass =
-  "mt-1.5 block w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-ink placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 aria-[invalid=true]:border-red-500";
+  "mt-2 block min-h-14 w-full rounded-xl border-2 border-line bg-white px-4 py-3 text-lg text-ink placeholder:text-slate-400 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/20 aria-[invalid=true]:border-red-500 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400";
 
-export function ExpertApplicationForm({ categories }: { categories: Category[] }) {
+export function ExpertApplicationForm({ occupations }: { occupations: Occupation[] }) {
   const [state, formAction, pending] = useActionState(
     submitExpertApplication,
     INITIAL_STATE,
@@ -57,6 +58,10 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
   // Validación en el navegador (mismas reglas que el servidor): cada campo se revisa al salir de él,
   // se vuelve a revisar mientras se corrige y todo se revisa al enviar. null = el campo está bien.
   const [clientErrors, setClientErrors] = useState<Partial<Record<ApplyField, string | null>>>({});
+  // El departamento elegido decide qué municipios se listan.
+  const [department, setDepartment] = useState(() =>
+    state.status === "error" ? state.values.department : EMPTY_VALUES.department,
+  );
 
   if (state.status === "success") {
     return <SuccessMessage email={state.email} fullName={state.fullName} accountCreated={state.accountCreated} />;
@@ -71,14 +76,19 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
   const errorId = (field: keyof ApplyFormValues) => `${formId}-${field}-error`;
   const errorFor = (field: ApplyField): string | undefined =>
     field in clientErrors ? (clientErrors[field] ?? undefined) : errors[field]?.[0];
+  const describedBy = (field: ApplyField, hintId?: string) =>
+    [hintId, errorFor(field) ? errorId(field) : null].filter(Boolean).join(" ") || undefined;
+  const municipalities = MUNICIPALITIES[department] ?? [];
 
   const validateField = (form: HTMLFormElement, field: ApplyField) =>
     setClientErrors((current) => ({ ...current, [field]: applyFieldError(field, readForm(form)) }));
 
   const onBlur = (event: FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLInputElement;
-    // Las casillas se revisan al marcarlas (onChange); los campos de texto al salir.
-    if (target.type !== "checkbox" && isApplyField(target.name)) validateField(event.currentTarget, target.name);
+    // Las casillas y las listas se revisan al cambiarlas (onChange); los campos de texto al salir.
+    if (target.type !== "checkbox" && target.tagName !== "SELECT" && isApplyField(target.name)) {
+      validateField(event.currentTarget, target.name);
+    }
   };
 
   const onChange = (event: FormEvent<HTMLFormElement>) => {
@@ -88,7 +98,15 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
       const clean = cleanPhoneInput(target.value);
       if (clean !== target.value) target.value = clean;
     }
-    if (target.type === "checkbox" || clientErrors[target.name]) validateField(event.currentTarget, target.name);
+    if (target.name === "department") {
+      // Otro departamento: la lista de municipios empieza de nuevo, sin error hasta que se envíe.
+      setDepartment(target.value);
+      setClientErrors((current) => ({ ...current, department: null, municipality: null }));
+      return;
+    }
+    if (target.type === "checkbox" || target.tagName === "SELECT" || clientErrors[target.name]) {
+      validateField(event.currentTarget, target.name);
+    }
   };
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -113,181 +131,151 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
       onSubmit={onSubmit}
       onBlur={onBlur}
       onChange={onChange}
-      className="space-y-5"
+      className="space-y-6"
       aria-busy={pending}
     >
+      <div>
+        <h3 className="text-2xl font-bold text-ink">Postúlate en un minuto</h3>
+        <p className="mt-1 text-base text-slate-600">Solo te pedimos estos datos. Los documentos los subes después en la app.</p>
+      </div>
+
       {hasClientErrors || state.status === "error" ? (
         <p
           role="alert"
-          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="rounded-xl border-2 border-red-200 bg-red-50 px-4 py-3 text-base text-red-800"
         >
           {hasClientErrors ? "Revisa los campos marcados en rojo." : state.status === "error" ? state.message : null}
         </p>
       ) : null}
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <Field
-          id={`${formId}-fullName`}
-          label="Nombre completo"
-          error={errorFor("fullName")}
-          errorId={errorId("fullName")}
-        >
-          <input
-            id={`${formId}-fullName`}
-            name="fullName"
-            type="text"
-            autoComplete="name"
-            required
-            placeholder="Nombre y apellido"
-            defaultValue={values.fullName}
-            aria-invalid={Boolean(errorFor("fullName"))}
-            aria-describedby={errorFor("fullName") ? errorId("fullName") : undefined}
-            className={inputClass}
-          />
-        </Field>
-        <Field
-          id={`${formId}-email`}
-          label="Correo electrónico"
-          error={errorFor("email")}
-          errorId={errorId("email")}
-        >
-          <input
-            id={`${formId}-email`}
-            name="email"
-            type="email"
-            autoComplete="email"
-            inputMode="email"
-            required
-            placeholder="nombre@correo.com"
-            defaultValue={values.email}
-            aria-invalid={Boolean(errorFor("email"))}
-            aria-describedby={errorFor("email") ? errorId("email") : undefined}
-            className={inputClass}
-          />
-        </Field>
-        <Field
-          id={`${formId}-phone`}
-          label="Celular / WhatsApp"
-          error={errorFor("phone")}
-          errorId={errorId("phone")}
-        >
-          <input
-            id={`${formId}-phone`}
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            inputMode="tel"
-            required
-            maxLength={16}
-            placeholder="300 123 4567"
-            defaultValue={values.phone}
-            aria-invalid={Boolean(errorFor("phone"))}
-            aria-describedby={errorFor("phone") ? errorId("phone") : undefined}
-            className={inputClass}
-          />
-        </Field>
-        <Field
-          id={`${formId}-city`}
-          label="Ciudad"
-          error={errorFor("city")}
-          errorId={errorId("city")}
-        >
-          <input
-            id={`${formId}-city`}
-            name="city"
-            type="text"
-            autoComplete="address-level2"
-            required
-            placeholder="Bogotá, Cali, Barranquilla…"
-            defaultValue={values.city}
-            aria-invalid={Boolean(errorFor("city"))}
-            aria-describedby={errorFor("city") ? errorId("city") : undefined}
-            className={inputClass}
-          />
-        </Field>
-      </div>
-
-      <fieldset
-        aria-describedby={errorFor("categories") ? errorId("categories") : undefined}
-        aria-invalid={Boolean(errorFor("categories"))}
-      >
-        <legend className="text-sm font-medium text-ink">
-          ¿En qué categorías trabajas?
-        </legend>
-        <div className="mt-2 grid gap-2 sm:grid-cols-2">
-          {categories.map((category) => {
-            const id = `${formId}-cat-${category.slug}`;
-            return (
-              <label
-                key={category.id}
-                htmlFor={id}
-                className="flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm text-ink has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary/40"
-              >
-                <input
-                  id={id}
-                  type="checkbox"
-                  name="categories"
-                  value={category.id}
-                  defaultChecked={values.categories.includes(category.id)}
-                  className="h-4 w-4 rounded border-line text-primary accent-primary focus:ring-primary"
-                />
-                {category.name}
-              </label>
-            );
-          })}
-        </div>
-        <FieldError id={errorId("categories")} message={errorFor("categories")} />
-      </fieldset>
-
-      <Field
-        id={`${formId}-experienceYears`}
-        label="Años de experiencia"
-        error={errorFor("experienceYears")}
-        errorId={errorId("experienceYears")}
-      >
+      <Field id={`${formId}-fullName`} label="Nombre completo" error={errorFor("fullName")} errorId={errorId("fullName")}>
         <input
-          id={`${formId}-experienceYears`}
-          name="experienceYears"
-          type="number"
-          inputMode="numeric"
-          min={0}
-          max={60}
-          step={1}
+          id={`${formId}-fullName`}
+          name="fullName"
+          type="text"
+          autoComplete="name"
+          autoCapitalize="words"
           required
-          defaultValue={values.experienceYears}
-          aria-invalid={Boolean(errorFor("experienceYears"))}
-          aria-describedby={
-            errorFor("experienceYears") ? errorId("experienceYears") : undefined
-          }
-          className={`${inputClass} sm:max-w-xs`}
+          placeholder="Nombre y apellido"
+          defaultValue={values.fullName}
+          aria-invalid={Boolean(errorFor("fullName"))}
+          aria-describedby={describedBy("fullName")}
+          className={inputClass}
         />
       </Field>
 
       <Field
-        id={`${formId}-bio`}
-        label="Reseña corta de tu experiencia"
-        hint="Qué tipo de trabajos haces, dónde has trabajado y qué te diferencia."
-        error={errorFor("bio")}
-        errorId={errorId("bio")}
+        id={`${formId}-phone`}
+        label="Celular"
+        hint="Te escribiremos por WhatsApp."
+        hintId={`${formId}-phone-hint`}
+        error={errorFor("phone")}
+        errorId={errorId("phone")}
       >
-        <textarea
-          id={`${formId}-bio`}
-          name="bio"
-          rows={4}
+        <input
+          id={`${formId}-phone`}
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          inputMode="tel"
           required
-          minLength={20}
-          maxLength={1000}
-          defaultValue={values.bio}
-          aria-invalid={Boolean(errorFor("bio"))}
-          aria-describedby={errorFor("bio") ? errorId("bio") : undefined}
+          maxLength={16}
+          placeholder="300 123 4567"
+          defaultValue={values.phone}
+          aria-invalid={Boolean(errorFor("phone"))}
+          aria-describedby={describedBy("phone", `${formId}-phone-hint`)}
           className={inputClass}
         />
+      </Field>
+
+      <Field
+        id={`${formId}-email`}
+        label="Correo electrónico"
+        hint="Ahí te llega la clave para entrar a la app."
+        hintId={`${formId}-email-hint`}
+        error={errorFor("email")}
+        errorId={errorId("email")}
+      >
+        <input
+          id={`${formId}-email`}
+          name="email"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          autoCapitalize="none"
+          required
+          placeholder="nombre@correo.com"
+          defaultValue={values.email}
+          aria-invalid={Boolean(errorFor("email"))}
+          aria-describedby={describedBy("email", `${formId}-email-hint`)}
+          className={inputClass}
+        />
+      </Field>
+
+      <Field id={`${formId}-department`} label="Departamento" error={errorFor("department")} errorId={errorId("department")}>
+        <Select
+          id={`${formId}-department`}
+          name="department"
+          defaultValue={values.department}
+          invalid={Boolean(errorFor("department"))}
+          describedBy={describedBy("department")}
+        >
+          <option value="" disabled>
+            Elige tu departamento
+          </option>
+          {DEPARTMENTS.map((d) => (
+            <option key={d.code} value={d.code}>
+              {d.name}
+            </option>
+          ))}
+        </Select>
+      </Field>
+
+      <Field id={`${formId}-municipality`} label="Municipio" error={errorFor("municipality")} errorId={errorId("municipality")}>
+        <Select
+          // Al cambiar de departamento la lista se arma de nuevo y queda sin elegir.
+          key={department}
+          id={`${formId}-municipality`}
+          name="municipality"
+          defaultValue={department === values.department ? values.municipality : ""}
+          disabled={municipalities.length === 0}
+          invalid={Boolean(errorFor("municipality"))}
+          describedBy={describedBy("municipality")}
+        >
+          <option value="" disabled>
+            {department ? "Elige tu municipio" : "Primero elige el departamento"}
+          </option>
+          {municipalities.map((m) => (
+            <option key={m.code} value={m.code}>
+              {m.name}
+            </option>
+          ))}
+        </Select>
+      </Field>
+
+      <Field id={`${formId}-occupation`} label="¿Cuál es tu ocupación?" error={errorFor("occupation")} errorId={errorId("occupation")}>
+        <Select
+          id={`${formId}-occupation`}
+          name="occupation"
+          defaultValue={values.occupation}
+          invalid={Boolean(errorFor("occupation"))}
+          describedBy={describedBy("occupation")}
+        >
+          <option value="" disabled>
+            Elige tu ocupación
+          </option>
+          {occupations.map((o) => (
+            <option key={o.code} value={o.code}>
+              {o.name}
+            </option>
+          ))}
+        </Select>
       </Field>
 
       <div>
         <label
           htmlFor={`${formId}-acceptTerms`}
-          className="flex items-start gap-3 text-sm text-slate-700"
+          className="flex cursor-pointer items-start gap-4 rounded-xl border-2 border-line p-4 text-base text-slate-700 has-[:checked]:border-primary has-[:checked]:bg-primary/5"
         >
           <input
             id={`${formId}-acceptTerms`}
@@ -296,16 +284,16 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
             required
             defaultChecked={values.acceptTerms}
             aria-invalid={Boolean(errorFor("acceptTerms"))}
-            aria-describedby={errorFor("acceptTerms") ? errorId("acceptTerms") : undefined}
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-line accent-primary focus:ring-primary"
+            aria-describedby={describedBy("acceptTerms")}
+            className="mt-0.5 h-6 w-6 shrink-0 rounded border-line accent-primary focus:ring-primary"
           />
           <span>
             Acepto los{" "}
-            <a href="/terminos" className="font-medium text-primary underline-offset-2 hover:underline" target="_blank" rel="noopener">
+            <a href="/terminos" className="font-semibold text-primary underline underline-offset-2" target="_blank" rel="noopener">
               términos y condiciones
             </a>{" "}
             y el{" "}
-            <a href="/privacidad" className="font-medium text-primary underline-offset-2 hover:underline" target="_blank" rel="noopener">
+            <a href="/privacidad" className="font-semibold text-primary underline underline-offset-2" target="_blank" rel="noopener">
               tratamiento de mis datos personales
             </a>
             .
@@ -327,10 +315,47 @@ export function ExpertApplicationForm({ categories }: { categories: Category[] }
         />
       </div>
 
-      <Button type="submit" disabled={pending} className="w-full sm:w-auto">
+      <Button type="submit" disabled={pending} className="min-h-14 w-full text-lg">
         {pending ? "Enviando…" : "Enviar postulación"}
       </Button>
     </form>
+  );
+}
+
+/** Lista desplegable nativa (en el celular abre el selector del sistema, fácil de usar) con flecha visible. */
+function Select({
+  id,
+  name,
+  defaultValue,
+  disabled,
+  invalid,
+  describedBy,
+  children,
+}: {
+  id: string;
+  name: string;
+  defaultValue: string;
+  disabled?: boolean;
+  invalid: boolean;
+  describedBy?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="relative">
+      <select
+        id={id}
+        name={name}
+        required
+        defaultValue={defaultValue}
+        disabled={disabled}
+        aria-invalid={invalid}
+        aria-describedby={describedBy}
+        className={`${inputClass} appearance-none pr-12`}
+      >
+        {children}
+      </select>
+      <ChevronDownIcon className="pointer-events-none absolute right-4 top-1/2 mt-1 h-6 w-6 -translate-y-1/2 text-slate-500" />
+    </div>
   );
 }
 
@@ -338,6 +363,7 @@ function Field({
   id,
   label,
   hint,
+  hintId,
   error,
   errorId,
   children,
@@ -345,16 +371,21 @@ function Field({
   id: string;
   label: string;
   hint?: string;
+  hintId?: string;
   error?: string;
   errorId: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-ink">
+      <label htmlFor={id} className="block text-base font-semibold text-ink">
         {label}
       </label>
-      {hint ? <p className="mt-0.5 text-xs text-slate-500">{hint}</p> : null}
+      {hint ? (
+        <p id={hintId} className="mt-0.5 text-base text-slate-500">
+          {hint}
+        </p>
+      ) : null}
       {children}
       <FieldError id={errorId} message={error} />
     </div>
@@ -364,7 +395,7 @@ function Field({
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
   return (
-    <p id={id} className="mt-1.5 text-sm text-red-700">
+    <p id={id} className="mt-2 text-base font-medium text-red-700">
       {message}
     </p>
   );

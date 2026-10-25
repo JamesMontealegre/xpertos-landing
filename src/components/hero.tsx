@@ -1,4 +1,4 @@
-import { USERS_APP_URL } from "@/lib/site";
+import { REQUEST_SERVICE_URL } from "@/lib/site";
 import { ButtonLink, Container } from "@/components/ui";
 import { ArrowRightIcon, CheckIcon } from "@/components/icons";
 import { BackgroundVideo } from "@/components/background-video";
@@ -38,7 +38,7 @@ export function Hero() {
             resto: soluciones a tu medida y acompañamiento de principio a fin.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <ButtonLink href={USERS_APP_URL} variant="accent" className="w-full sm:w-auto">
+            <ButtonLink href={REQUEST_SERVICE_URL} variant="accent" className="w-full sm:w-auto">
               Solicitar un servicio
               <ArrowRightIcon className="h-4 w-4" />
             </ButtonLink>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { NAV_LINKS, USERS_APP_URL } from "@/lib/site";
+import { NAV_LINKS, REQUEST_SERVICE_URL } from "@/lib/site";
 import { ButtonLink } from "@/components/ui";
 import { CloseIcon, MenuIcon } from "@/components/icons";
 
@@ -42,7 +42,7 @@ export function MobileNav() {
               ))}
             </ul>
           </nav>
-          <ButtonLink href={USERS_APP_URL} className="mt-3 w-full">
+          <ButtonLink href={REQUEST_SERVICE_URL} className="mt-3 w-full">
             Solicitar un servicio
           </ButtonLink>
         </div>

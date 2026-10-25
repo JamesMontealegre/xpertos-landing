@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NAV_LINKS, SITE_NAME, USERS_APP_URL } from "@/lib/site";
+import { NAV_LINKS, SITE_NAME, REQUEST_SERVICE_URL } from "@/lib/site";
 import { ButtonLink, Container } from "@/components/ui";
 import { MobileNav } from "@/components/mobile-nav";
 import { Logo } from "@/components/logo";
@@ -32,7 +32,7 @@ export function Header() {
         </nav>
 
         <div className="hidden md:block">
-          <ButtonLink href={USERS_APP_URL} className="px-4 py-2">
+          <ButtonLink href={REQUEST_SERVICE_URL} className="px-4 py-2">
             Solicitar un servicio
           </ButtonLink>
         </div>

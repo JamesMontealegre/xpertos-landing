@@ -1,5 +1,5 @@
 import { getCategories } from "@/lib/categories";
-import { USERS_APP_URL } from "@/lib/site";
+import { REQUEST_SERVICE_URL } from "@/lib/site";
 import { ButtonLink, Container, SectionHeading } from "@/components/ui";
 import { CategoryIcon } from "@/components/icons";
 import { BackgroundVideo } from "@/components/background-video";
@@ -45,7 +45,7 @@ export async function Services() {
           ))}
         </ul>
         <div className="mt-10 text-center">
-          <ButtonLink href={USERS_APP_URL}>Solicitar un servicio</ButtonLink>
+          <ButtonLink href={REQUEST_SERVICE_URL}>Solicitar un servicio</ButtonLink>
         </div>
       </Container>
     </section>

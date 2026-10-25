@@ -8,6 +8,9 @@ export const CONTACT_EMAIL = "hola@xpertos.com.co";
 export const USERS_APP_URL =
   process.env.NEXT_PUBLIC_USERS_APP_URL ?? "http://localhost:8081";
 
+/** "Solicitar un servicio": pantalla de la app que explica los pasos (crear la cuenta y pedir el servicio). */
+export const REQUEST_SERVICE_URL = `${USERS_APP_URL}/solicitar`;
+
 export const NAV_LINKS = [
   { href: "/#como-funciona", label: "Cómo funciona" },
   { href: "/#servicios", label: "Servicios" },

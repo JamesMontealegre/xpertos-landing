@@ -30,7 +30,7 @@ const FAQS = [
 
 export function Faq() {
   return (
-    <section id="preguntas" className="scroll-mt-20 bg-white py-16 sm:py-24">
+    <section id="preguntas" className="bg-white py-16 sm:py-24">
       <Container>
         <SectionHeading
           eyebrow="Preguntas frecuentes"

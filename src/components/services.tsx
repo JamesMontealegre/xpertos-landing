@@ -8,7 +8,7 @@ export async function Services() {
   const categories = await getCategories();
 
   return (
-    <section id="servicios" className="relative scroll-mt-20 overflow-hidden bg-white py-16 sm:py-24">
+    <section id="servicios" className="relative overflow-hidden bg-white py-16 sm:py-24">
       {/* Video de planos y casco de fondo bajo un velo blanco que se funde arriba y abajo con las secciones vecinas. */}
       <BackgroundVideo src="/videos/casco.mp4" poster="/videos/casco.jpg" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-slate-200/60" />

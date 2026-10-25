@@ -28,7 +28,8 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  /* Altura del menú fijo (h-16): los enlaces a secciones (#servicios…) quedan justo debajo. */
+  scroll-padding-top: 4rem;
 }
 
 body {

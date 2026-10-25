@@ -15,7 +15,9 @@ export async function WorkWithUs() {
   const occupations = await getOccupations();
 
   return (
-    <section id="trabaja-con-nosotros" className="relative scroll-mt-20 overflow-hidden bg-brand-950 py-20 sm:py-28">
+    <section className="relative overflow-hidden bg-brand-950 pt-28 pb-20 sm:py-28">
+      {/* Ancla al final del degradado superior: al llegar desde el menú no se ve el borde claro (parece la sección anterior). */}
+      <div id="trabaja-con-nosotros" aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-20" />
       {/* Video de un maestro de obra de fondo con el degradado de la marca; se funde con las secciones vecinas. */}
       <BackgroundVideo src="/videos/albanil.mp4" poster="/videos/albanil.jpg" />
       <div
@@ -53,7 +55,7 @@ export async function WorkWithUs() {
               ))}
             </ul>
             <p className="mt-6 text-sm text-white/65">
-              Los expertos de Xpertos son independientes. Después de postularte,
+              Nuestros Xpertos son independientes. Después de postularte,
               te pediremos tus documentos en la app para verificarte.
             </p>
           </div>

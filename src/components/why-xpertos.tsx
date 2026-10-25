@@ -36,7 +36,7 @@ const BENEFITS = [
 
 export function WhyXpertos() {
   return (
-    <section id="por-que-xpertos" className="relative scroll-mt-20 overflow-hidden py-16 sm:py-24">
+    <section id="por-que-xpertos" className="relative overflow-hidden py-16 sm:py-24">
       {/* Video del equipo revisando una obra, bajo un velo claro que se funde con las secciones vecinas. */}
       <BackgroundVideo src="/videos/equipo.mp4" poster="/videos/equipo.jpg" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-slate-300/55" />

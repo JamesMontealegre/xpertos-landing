@@ -19,6 +19,7 @@ export const FALLBACK_OCCUPATIONS: Occupation[] = [
   { code: "cerrajero", name: "Cerrajero" },
   { code: "jardinero", name: "Jardinero" },
   { code: "aseo", name: "Servicios de aseo y limpieza" },
+  { code: "mensajero", name: "Mensajero" },
 ];
 
 /** Ocupaciones activas ordenadas (se cachean por horas; si la base falla, la lista de respaldo). */

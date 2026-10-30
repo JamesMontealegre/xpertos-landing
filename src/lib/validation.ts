@@ -57,8 +57,11 @@ export function municipalityError(value: string, department: string): string | n
   return null;
 }
 
-export function occupationError(value: string): string | null {
-  return /^[a-z0-9-]{2,40}$/.test(value) ? null : "Elige tu ocupación.";
+/** Una o varias ocupaciones (códigos del catálogo). */
+export function occupationError(value: string[]): string | null {
+  if (value.length === 0) return "Elige al menos una ocupación.";
+  if (value.length > 15 || !value.every((code) => /^[a-z0-9-]{2,40}$/.test(code))) return "Elige tus ocupaciones de la lista.";
+  return null;
 }
 
 export function acceptTermsError(value: boolean): string | null {
@@ -71,7 +74,8 @@ export type ApplyValues = {
   phone: string;
   department: string;
   municipality: string;
-  occupation: string;
+  /** Códigos de las ocupaciones elegidas (una o varias). */
+  occupation: string[];
   acceptTerms: boolean;
 };
 

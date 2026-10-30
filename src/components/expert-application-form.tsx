@@ -20,7 +20,7 @@ const EMPTY_VALUES: ApplyFormValues = {
   phone: "",
   department: "76",
   municipality: "",
-  occupation: "",
+  occupation: [],
   acceptTerms: false,
 };
 
@@ -38,7 +38,7 @@ function readForm(form: HTMLFormElement): ApplyFormValues {
     phone: str("phone"),
     department: str("department"),
     municipality: str("municipality"),
-    occupation: str("occupation"),
+    occupation: data.getAll("occupation").filter((v): v is string => typeof v === "string" && v !== ""),
     acceptTerms: data.get("acceptTerms") === "on",
   };
 }
@@ -253,24 +253,31 @@ export function ExpertApplicationForm({ occupations }: { occupations: Occupation
         </Select>
       </Field>
 
-      <Field id={`${formId}-occupation`} label="¿Cuál es tu ocupación?" error={errorFor("occupation")} errorId={errorId("occupation")}>
-        <Select
-          id={`${formId}-occupation`}
-          name="occupation"
-          defaultValue={values.occupation}
-          invalid={Boolean(errorFor("occupation"))}
-          describedBy={describedBy("occupation")}
-        >
-          <option value="" disabled>
-            Elige tu ocupación
-          </option>
+      <fieldset aria-describedby={describedBy("occupation", `${formId}-occupation-hint`)}>
+        <legend className="block text-base font-semibold text-ink">¿Cuál es tu ocupación?</legend>
+        <p id={`${formId}-occupation-hint`} className="mt-0.5 text-base text-slate-500">
+          Marca todas las que haces.
+        </p>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
           {occupations.map((o) => (
-            <option key={o.code} value={o.code}>
-              {o.name}
-            </option>
+            <label
+              key={o.code}
+              className="flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border-2 border-line px-4 py-2 text-base text-ink has-[:checked]:border-primary has-[:checked]:bg-primary/5"
+            >
+              <input
+                name="occupation"
+                type="checkbox"
+                value={o.code}
+                defaultChecked={values.occupation.includes(o.code)}
+                aria-invalid={Boolean(errorFor("occupation"))}
+                className="h-6 w-6 shrink-0 rounded border-line accent-primary focus:ring-primary"
+              />
+              <span>{o.name}</span>
+            </label>
           ))}
-        </Select>
-      </Field>
+        </div>
+        <FieldError id={errorId("occupation")} message={errorFor("occupation")} />
+      </fieldset>
 
       <div>
         <label

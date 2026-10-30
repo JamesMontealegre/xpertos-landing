@@ -46,7 +46,13 @@ const schema = z
     phone: checked(phoneError).transform(normalizePhone),
     department: checked(departmentError),
     municipality: z.string(),
-    occupation: checked(occupationError),
+    occupation: z
+      .array(z.string())
+      .transform((codes) => [...new Set(codes)])
+      .superRefine((codes, ctx) => {
+        const message = occupationError(codes);
+        if (message) ctx.addIssue({ code: "custom", message });
+      }),
     acceptTerms: z.literal(true, { error: acceptTermsError(false) ?? undefined }),
   })
   .superRefine((value, ctx) => {
@@ -68,7 +74,7 @@ function readValues(formData: FormData): ApplyFormValues {
     phone: str("phone"),
     department: str("department"),
     municipality: str("municipality"),
-    occupation: str("occupation"),
+    occupation: formData.getAll("occupation").filter((v): v is string => typeof v === "string" && v !== ""),
     acceptTerms: formData.get("acceptTerms") === "on",
   };
 }
@@ -197,7 +203,7 @@ export async function submitExpertApplication(
       p_email: data.email,
       p_phone: data.phone,
       p_municipality_code: data.municipality,
-      p_occupation_code: data.occupation,
+      p_occupation_codes: data.occupation,
       p_temp_password: tempPassword ?? undefined,
     });
     if (insert.error) {
